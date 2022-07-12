@@ -1,0 +1,16 @@
+﻿<!---->
+<Project>
+	<PropertyGroup>
+		<!--COMMON PARAMS -->
+		<VirtualHost></VirtualHost>
+
+		<!-- FRONTLINE SETTINGS-->
+		<EnableFrontlineAuthentication>false</EnableFrontlineAuthentication>
+		<FLSecurityProductId>SEISM</FLSecurityProductId>
+
+		<!--PLAN PARAMS-->
+		<RabbitQueueEnable>true</RabbitQueueEnable>
+		<ElasticPlanIndexName></ElasticPlanIndexName>
+		<UseSessionValues>false</UseSessionValues>
+	</PropertyGroup>
+</Project>

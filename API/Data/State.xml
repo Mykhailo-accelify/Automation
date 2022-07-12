@@ -1,0 +1,37 @@
+﻿<!--States-->
+<Project>
+	<PropertyGroup>
+		<!--COMMON PARAMS -->
+		<DatabaseName></DatabaseName>
+		<GeneralState>Iowa</GeneralState>
+		<CryptKey>WY661E4F5EEFB14D3C8AD10BD0F07A1A</CryptKey>
+		<MemcachedPort>11291</MemcachedPort>
+		<SisenseStateAbbreviation></SisenseStateAbbreviation>
+
+		<!-- TRACK PARAMS -->
+		<ShowLoginVideoBlock>false</ShowLoginVideoBlock>
+		<EnableScheduler>true</EnableScheduler>
+		<EnableAssign>true</EnableAssign>
+		<UseSingleEligibilityDate>false</UseSingleEligibilityDate>
+		<UseSeparateEligibilityDates>false</UseSeparateEligibilityDates>
+
+		<!--DATABASE PARAMS-->
+		<ClientFolder>StateIowa</ClientFolder>
+		<SSISIsEnableIep>true</SSISIsEnableIep>
+
+		<!--CHEETAH PARAMS-->
+		<DisableAdminPart>false</DisableAdminPart>
+
+		<!--PLAN PARAMS-->
+		<EnableATServiceSync>true</EnableATServiceSync>
+		<Customer>Iowa</Customer>
+		<GoogleAnalyticsId></GoogleAnalyticsId>
+		<IsParentalConsentSyncEnabled>true</IsParentalConsentSyncEnabled>
+		<ShouldSendDistributionEmail>false</ShouldSendDistributionEmail>
+		<IsEvalEnabled>false</IsEvalEnabled>
+		<EnableSplittedPdf>false</EnableSplittedPdf>
+		<IepAngularPages>[]</IepAngularPages>
+		<AngularProfile>true</AngularProfile>
+		<IsTransportationSyncEnabled>true</IsTransportationSyncEnabled>
+	</PropertyGroup>
+</Project>

@@ -1,0 +1,41 @@
+﻿<!--States-->
+<Project>
+  <PropertyGroup>
+    <!--COMMON PARAMS -->
+    <DatabaseName></DatabaseName>
+    <GeneralState>UnitedStates</GeneralState>
+    <CryptKey>US1ACE0E39E94C63B11041DFB1AFE7BD</CryptKey>
+    <MemcachedPort>11250</MemcachedPort>
+    <SisenseStateAbbreviation>UNITEDSTATES</SisenseStateAbbreviation>
+
+    <!-- TRACK PARAMS -->
+    <ShowLoginVideoBlock>false</ShowLoginVideoBlock>
+    <EnableScheduler>true</EnableScheduler>
+    <EnableAssign>true</EnableAssign>
+    <UseSingleEligibilityDate>false</UseSingleEligibilityDate>
+    <UseSeparateEligibilityDates>false</UseSeparateEligibilityDates>
+
+    <!--DATABASE PARAMS-->
+    <ClientFolder>StateUnitedStates</ClientFolder>
+    <SSISIsEnableIep>true</SSISIsEnableIep>
+    <SisenseIepSecurityCubeName>UNITEDSTATES_SECURITY</SisenseIepSecurityCubeName>
+    <SisenseTrackSecurityCubeName>UNITEDSTATES_SECURITY</SisenseTrackSecurityCubeName>
+    <SisenseIepDataSources>UNITEDSTATES_Plan_Multiple_STAR</SisenseIepDataSources>
+    <SisenseTrackDataSources>UNITEDSTATES_TRACK_MULTIPLE_STAR</SisenseTrackDataSources>
+
+   <!--CHEETAH PARAMS-->
+   <DisableAdminPart>false</DisableAdminPart>
+
+    <!--PLAN PARAMS-->
+    <EnableATServiceSync>true</EnableATServiceSync>
+    <Customer>UnitedStates</Customer>
+    <GoogleAnalyticsId>G-QMEM8HCZ8K</GoogleAnalyticsId>
+    <IsParentalConsentSyncEnabled>true</IsParentalConsentSyncEnabled>
+    <ShouldSendDistributionEmail>false</ShouldSendDistributionEmail>
+    <IsEvalEnabled>false</IsEvalEnabled>
+    <EnableSplittedPdf>false</EnableSplittedPdf>
+    <IepAngularPages>[]</IepAngularPages>
+    <AngularProfile>true</AngularProfile>
+    <EnableInjectPdfToRdlc>true</EnableInjectPdfToRdlc>
+  </PropertyGroup>
+</Project>
