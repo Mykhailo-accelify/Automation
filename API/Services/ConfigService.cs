@@ -2,6 +2,7 @@
 {
     using API.Interfaces;
     using API.Models;
+    using API.Models.TeamCity;
     using DataAccess.Entities;
     using System.Xml;
 
@@ -343,6 +344,17 @@
             }
 
             return cfg;
+        }
+
+        public async Task<TeamCityDeleteConfiguration?> GenerateTeamCityDeleteConfiguration(IEnumerable<string> clients)
+        {
+            var clients = await clientService.GetAll();
+            if (client is null)
+            {
+                logger.LogError($"{nameof(Client)} not found with {clientId} id.");
+                return default;
+            }
+
         }
 
         private char? GenerateDiskLetter(string seqence, string current)

@@ -60,6 +60,21 @@
             return Ok(result?.InnerXml);
         }
 
+
+        [HttpGet("common/{infrastructureName}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetCommonConfiguration(string infrastructureName)
+        {
+            var result = await configService.GenerateCommonEnvironmentConfig(infrastructureName);
+            if (result is null)
+            {
+                return BadRequest($"Error during common configuration generation, check log");
+            }
+
+            return Ok(result?.InnerXml);
+        }
+
         [HttpGet("tc/{clientId}/{infrastructureName}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TeamCityConfiguration))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -74,19 +89,18 @@
             return Ok(result);
         }
 
-
-        [HttpGet("common/{infrastructureName}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [HttpDelete("tc")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TeamCityConfiguration))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetCommonConfiguration(string infrastructureName)
+        public async Task<IActionResult> GetTeamCityDeleteConfiguration([FromBody] IEnumerable<string> clients)
         {
-            var result = await configService.GenerateCommonEnvironmentConfig(infrastructureName);
+            var result = await configService.GenerateTeamCityDeleteConfiguration(clients);
             if (result is null)
             {
-                return BadRequest($"Error during common configuration generation, check log");
+                return BadRequest($"Error during TeamCity delete configuration generation, check log");
             }
 
-            return Ok(result?.InnerXml);
+            return Ok(result);
         }
     }
 }

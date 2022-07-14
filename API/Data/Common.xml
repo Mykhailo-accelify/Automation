@@ -1,0 +1,140 @@
+<!---->
+<Project>
+  <PropertyGroup>
+    <DiskName></DiskName>
+    <!--Deploy Common PARAMS-->
+    <AttachDiskOnRemoteMachine>true</AttachDiskOnRemoteMachine>
+    <DestinationIP></DestinationIP>
+    <DestinationUser></DestinationUser>
+    <DestinationPassword></DestinationPassword>
+    <DestinationRootPath>$(DiskName):</DestinationRootPath>
+    <NetworkPath></NetworkPath>
+    <NetworkDriveUser>$(DestinationUser)</NetworkDriveUser>
+    <IntegrationTokenSecret>wuylOFMp9Y/MUssKEBFcIV7sZpM6gnyBRodXlOQjHtVgqU2/FtHv1a65aiRHHWyhEyw8iDMlZvULv6j/ZRJ0rw==</IntegrationTokenSecret>
+    <DocumentViewerSettings>{'Url':'https://documents-spm-stage.ss.frontlineeducation.com', 'IntegrationApiKey':'Eh9KsHnRX7w97MfWMJxFdeM2P3V53k3txmgW', 'Scope':'FL.Accelify.IntegrationManagement'}</DocumentViewerSettings>
+    <!--MACHINE FOLDERS-->
+    <StateFolder>PRD\$(State)</StateFolder>
+    <TrackFolderPath>$(StateFolder)\Track</TrackFolderPath>
+    <CheetahFolderPath>$(StateFolder)\Cheetah</CheetahFolderPath>
+    <SchedulerFolderPath>$(StateFolder)\Scheduler</SchedulerFolderPath>
+    <ImportToolPath>$(StateFolder)\ImportTool</ImportToolPath>
+    <PlanFolderPath>$(StateFolder)\Plan</PlanFolderPath>
+    <HamptonPlanFolderPath>$(StateFolder)\HamptonPlan</HamptonPlanFolderPath>
+    <PlanNGFolderPath>$(StateFolder)\PlanNg</PlanNGFolderPath>
+    <RabbitWorkerPath>$(StateFolder)\RabbitWorker</RabbitWorkerPath>
+    <RabbitWorkerPathExpress>$(StateFolder)\RabbitWorkerExpress</RabbitWorkerPathExpress>
+    <AcceliApiFolderPath>$(StateFolder)\AcceliApi</AcceliApiFolderPath>
+    <AcceliProgressApiFolderPath>$(StateFolder)\AcceliProgressApi</AcceliProgressApiFolderPath>
+    <WorkflowFolderPath>$(StateFolder)\Workflow</WorkflowFolderPath>
+    <SisensePath>$(StateFolder)\Sisense</SisensePath>
+    <!--COMMON PARAMS -->
+    <DatabaseUser>website</DatabaseUser>
+    <IntegratedSecurity>SSPI</IntegratedSecurity>
+    <DatabaseServer></DatabaseServer>
+    <EncryptWebConfig>false</EncryptWebConfig>
+    <UseHttps>false</UseHttps>
+    <StartUrl>Login.aspx</StartUrl>
+    <DemoState>false</DemoState>
+    <EmailHost>smtp.mailgun.org</EmailHost>
+    <EmailPort>587</EmailPort>
+    <EmailUserName>notifications@mail9.frontlineed.com</EmailUserName>
+    <EmailPassword></EmailPassword>
+    <EmailEnableSSL>true</EmailEnableSSL>
+    <EmailSenderName>no-reply@mail9.frontlineed.com</EmailSenderName>
+    <MemcachedHost>10.111.70.32</MemcachedHost>
+    <MemcachedPort>11211</MemcachedPort>
+    <KeyContainerName>accelifyKeyContainerName</KeyContainerName>
+    <DatabaseMaxPool></DatabaseMaxPool>
+    <DisableFullStory>false</DisableFullStory>
+    <DisableZendeskWidget>false</DisableZendeskWidget>
+    <RabbitMQIP>acc-rabbitmq-prod.spm.frontlineeducation.com</RabbitMQIP>
+    <RabbitMQDBUser>rabbitmq_website</RabbitMQDBUser>
+    <RabbitMQDBPassword></RabbitMQDBPassword>
+    <VirtualHost>/</VirtualHost>
+    <JobMachineName></JobMachineName>
+    <ImportToolJobMachineName></ImportToolJobMachineName>
+    <EnableRabbitMQ>true</EnableRabbitMQ>
+    <EnableRabbitQueue>false</EnableRabbitQueue>
+    <EnableDistributionPackageManager>false</EnableDistributionPackageManager>
+    <!--SISENSE SETTINGS-->
+    <SisenseUrl>https://reporting.spm.frontlineeducation.com</SisenseUrl>
+    <SisenseUserName>accelidataadmin@accelify.com</SisenseUserName>
+    <SisensePassword></SisensePassword>
+    <SisenseEncryptionKey>8A94353CDB140952B236E1556FEEF344</SisenseEncryptionKey>
+    <!-- FRONTLINE SETTINGS-->
+    <EnableFrontline>true</EnableFrontline>
+    <EnableFrontlineAuthentication>false</EnableFrontlineAuthentication>
+    <FLSecurityClientSecret></FLSecurityClientSecret>
+    <FLSecurityIdentityProviderName>SEIAccelify</FLSecurityIdentityProviderName>
+    <FLSecurityClientId>SEIAccelify</FLSecurityClientId>
+    <FLSecurityHost>https://app.frontlineeducation.com</FLSecurityHost>
+    <FLSecuritySidekickJs>https://sidekick.uitools.frontlineeducation.com/sidekick.js</FLSecuritySidekickJs>
+    <FLSecurityIdGatewayHost>https://login.frontlineeducation.com</FLSecurityIdGatewayHost>
+    <FLSecurityAuthenticationHub>https://authentication.iepdirect.com/Accelify</FLSecurityAuthenticationHub>
+    <FLSecurityFlserviceAPIHost>https://api2.frontlineeducation.com</FLSecurityFlserviceAPIHost>
+    <FLSecurityZendeskUrl>https://frontlineplanservmgmt.zendesk.com</FLSecurityZendeskUrl>
+    <FLSecurityZendeskBrandId>360004176573</FLSecurityZendeskBrandId>
+    <FLSecurityProductId>SEIEPM</FLSecurityProductId>
+    <FLSecurityAuthenticationGatewayHost>https://authentication.iepdirect.com/Accelify/SignOut/</FLSecurityAuthenticationGatewayHost>
+    <!-- TRACK PARAMS -->
+    <RedirectInIep>StateKansas/IEP/{R:1}</RedirectInIep>
+    <ElasticUri>http://192.168.252.246:9200</ElasticUri>
+    <ElasticUsername>miklos</ElasticUsername>
+    <ElasticPassword>rootpass</ElasticPassword>
+    <ElasticTrackIndexName>dc-provider-licenses</ElasticTrackIndexName>
+    <SourceMachineName>accelifywebqc</SourceMachineName>
+    <SamlEnabled>false</SamlEnabled>
+    <LdapEnabled>false</LdapEnabled>
+    <ReCaptchaSiteKey>6LfkEMwUAAAAAAMOf7XCxy7D9TD7U6SjG9NSoxJQ</ReCaptchaSiteKey>
+    <ReCaptchaSecretKey>6LfkEMwUAAAAANukcPN2npxSwsqhUPYq2eMykkbs</ReCaptchaSecretKey>
+    <EnableJWTValidation>true</EnableJWTValidation>
+    <!--DATABASE PARAMS-->
+    <SSISSourceDbInstance>192.168.252.51</SSISSourceDbInstance>
+    <SSISTargetUserName>dbDeploy</SSISTargetUserName>
+    <SSISTargetPassword></SSISTargetPassword>
+    <!--CHEETAH PARAMS-->
+    <ScannedDocumentImageFolder>\\192.168.252.233\AcceliScanStorage</ScannedDocumentImageFolder>
+    <!--PLAN PARAMS-->
+    <ShowErrorStackTrace>false</ShowErrorStackTrace>
+    <UseSessionValues>false</UseSessionValues>
+    <EnableResponseEnd>false</EnableResponseEnd>
+    <DisableWalkMe>true</DisableWalkMe>
+    <DisableLiveChat>true</DisableLiveChat>
+    <EnableConcurrencyAndHistory>false</EnableConcurrencyAndHistory>
+    <RedisConnectionServer>accelify-historical-stage.g0dvpg.ng.0001.use1.cache.amazonaws.com</RedisConnectionServer>
+    <RedisConnectionPort>6379</RedisConnectionPort>
+    <RedisConnectionPassword></RedisConnectionPassword>
+    <ScannedDocumentFolder>$(ScannedDocumentImageFolder)</ScannedDocumentFolder>
+    <RabbitNotificationServerJs>https://iep-notifications-server.use1.frontlineeducation.com/assets/notifications-client.bundle.js</RabbitNotificationServerJs>
+    <RabbitNotificationServerCss>https://iep-notifications-server.use1.frontlineeducation.com/assets/notifications-client.bundle.css</RabbitNotificationServerCss>
+    <RabbitCorrelationUrl>https://iep-correlation-server.use1.frontlineeducation.com/api/addCorrelation?correlationId=</RabbitCorrelationUrl>
+    <HistoryDbDefaultDbInstance>192.168.252.126</HistoryDbDefaultDbInstance>
+    <HistoryDbDefaultDbUser>websiteredisqc</HistoryDbDefaultDbUser>
+    <HistoryDbDefaultDbPassword>B84E#47FA</HistoryDbDefaultDbPassword>
+    <CollaborationPortalUrl>https://collaborationportal.frontlineeducation.com/</CollaborationPortalUrl>
+    <CollaborationPortalApiClientID>accelify</CollaborationPortalApiClientID>
+    <CollaborationPortalApiSecretKey>2w7V5Wm3QrVwSLo2</CollaborationPortalApiSecretKey>
+    <CollaborationPortalOrganizationId>Accelify</CollaborationPortalOrganizationId>
+    <CollaborationPortalOrganizationName>Accelify</CollaborationPortalOrganizationName>
+    <EnableInjectPdfToRdlc>true</EnableInjectPdfToRdlc>
+    <!--ImportTool PARAMS-->
+    <AutoImportPath></AutoImportPath>
+    <ImportToolDatabaseServer>ACCPRDLIST1.aesopprod.com,60173</ImportToolDatabaseServer>
+    <ImportToolDatabaseName>PRD_Acceliimport</ImportToolDatabaseName>
+
+    <!--Rabbit Worker -->
+    <RabbitWorkerMachineIP></RabbitWorkerMachineIP>
+    <RabbitWorkerMachineUser></RabbitWorkerMachineUser>
+    <RabbitWorkerMachinePassword></RabbitWorkerMachinePassword>
+    <RabbitWorkerDriveName>L</RabbitWorkerDriveName>
+    <RabbitWorkerFolder>$(RabbitWorkerDriveName):\$(RabbitWorkerPath)</RabbitWorkerFolder>
+    <RabbitWorkerCount>1</RabbitWorkerCount>
+    <RabbitWorkerDriveUser>$(NetworkDriveUser)</RabbitWorkerDriveUser>
+    <RabbitWorkerDrivePass>$(NetworkDrivePassword)</RabbitWorkerDrivePass>
+    <RabbitWorkerDriveRoot>$(NetworkPath)</RabbitWorkerDriveRoot>
+    <RabbitWorkerAttachmentFolder>$(RabbitWorkerDriveName):\$(PlanFolderPath)\Attachments</RabbitWorkerAttachmentFolder>
+    <RabbitWorkerPrintSamplesFolder>$(RabbitWorkerDriveName):\$(PlanFolderPath)\PrintSamples</RabbitWorkerPrintSamplesFolder>
+    <RabbitWorkerReportsFolder>$(RabbitWorkerDriveName):\$(PlanFolderPath)\Reports\</RabbitWorkerReportsFolder>
+    <RabbitWorkerNewEngineReportsFolder>$(RabbitWorkerDriveName):\$(PlanFolderPath)\Reports\Forms\NewEngine\</RabbitWorkerNewEngineReportsFolder>
+  </PropertyGroup>
+</Project>

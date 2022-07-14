@@ -14,5 +14,7 @@
         public Task<TeamCityConfiguration?> GenerateTeamCityConfiguration(int clientId, string infrastructureName);
 
         public Task<XmlDocument?> GenerateCommonEnvironmentConfig(string infrastructureName);
+
+        public Task<TeamCityConfiguration?> GenerateTeamCityDeleteConfiguration(IEnumerable<string> clients);
     }
 }
