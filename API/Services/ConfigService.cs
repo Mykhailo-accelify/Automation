@@ -348,7 +348,7 @@
         }
 
 
-        public async Task<TeamCityDeleteConfiguration?> GenerateTeamCityDeleteConfiguration(IEnumerable<string> names)
+        public async Task<IEnumerable<InfrastructureTC>?> GenerateTeamCityDeleteConfiguration(IEnumerable<string> names)
         {
             var clients = await clientService.GetRange(names);
             if (clients is null)
@@ -361,33 +361,35 @@
                 ConfigVariables.RabbitType,
                 ConfigVariables.IISType,
                 ConfigVariables.IISImportToolType,
-                ConfigVariables.LoadBalancerWebType,
-                ConfigVariables.LoadBalancerImportType,
                 ConfigVariables.FSXType,
-                ConfigVariables.DBListenerType,
-                ConfigVariables.Domain,
                 ConfigVariables.SubDomain,
-                ConfigVariables.RootDomain,
-                ConfigVariables.DatabaseNameSuffix
+                ConfigVariables.Domain,
+                ConfigVariables.RootDomain
+
             };
             var constants = constantService.GetRange(constKeys);
 
             string[] varKeys = {
                 ConfigVariables.DistrictNameTemplate,
-                ConfigVariables.DistrictNameImportTemplate
+                ConfigVariables.DistrictNameImportTemplate,
+                ConfigVariables.DomainTemplate
             };
             var variables = variablesService.GetRange(varKeys);
 
-            var cfg = new TeamCityDeleteConfiguration();
+            var infrastructures = new List<InfrastructureTC>();
             foreach (var client in clients)
             {
                 foreach (var infrastructure in client.Infrastructures)
                 {
-                    if (!cfg.Infrastructures.Where(i => i.Name == infrastructure.Name).Any())
+                    if (!infrastructures.Where(i => i.Name == infrastructure.Name).Any())
                     {
-                        cfg.Infrastructures.Add(new InfrastructureTC()
+                        infrastructures.Add(new InfrastructureTC()
                         {
                             Name = infrastructure.Name,
+                            Domain = string.Format(variables[ConfigVariables.DomainTemplate],
+                            constants[ConfigVariables.SubDomain],
+                            constants[ConfigVariables.Domain],
+                            constants[ConfigVariables.RootDomain]),
 
                             IIS = new IISGroup()
                             {
@@ -425,19 +427,19 @@
                        ConfigVariables.Abbreviation(client),
                        ConfigVariables.Abbreviation(client.State)
                     });
-                    cfg.Infrastructures
+                    infrastructures
                         .Where(i => i.Name == infrastructure.Name)
                         .FirstOrDefault()?
                         .Clients
                         .Add(new ClientTC()
                         {
-                            DistrictName = await FillTemplate(variables[ConfigVariables.DistrictNameTemplate], parameters),
-                            ImportSite = await FillTemplate(variables[ConfigVariables.DistrictNameImportTemplate], parameters)
+                            DistrictName = (await FillTemplate(variables[ConfigVariables.DistrictNameTemplate], parameters))?.ToLower(),
+                            ImportSite = (await FillTemplate(variables[ConfigVariables.DistrictNameImportTemplate], parameters))?.ToLower()
                         });
                 }
             }
 
-            return cfg;
+            return infrastructures;
         }
 
         private async Task<string?> FillTemplate(string template, IDictionary<string, string> parameters)
@@ -451,14 +453,15 @@
             }
 
             var templateParameter = constant.Value.Value;
+            var result = template;
 
             foreach (var param in parameters)
             {
                 var oldValue = string.Format(templateParameter, param.Key);
-                template.Replace(oldValue, param.Value);
+                result = result.Replace(oldValue, param.Value);
             }
 
-            return template;
+            return result;
         }
         
 

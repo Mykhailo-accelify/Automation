@@ -64,7 +64,10 @@
                 .Where(c => names.Contains(c.Name))
                 .Include(c => c.State)
                 .Include(c => c.Infrastructures)
+                .ThenInclude(i => i.TypeInfrastructure)
+                .Include(c => c.Infrastructures)
                 .ThenInclude(i => i.Instances)
+                .ThenInclude(i => i.TypeInstance)
                 .ToArrayAsync();
         }
 

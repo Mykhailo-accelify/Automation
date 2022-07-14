@@ -1,12 +1,18 @@
 ﻿namespace API.Models.TeamCity
 {
-    public class TeamCityDeleteConfiguration
+    public class InfrastructureTC
     {
+        public string Name { get; set; }
+
         public string Domain { get; set; }
 
-        public ICollection<ClientTC> Clients { get; set; }
+        public ICollection<ClientTC> Clients { get; set; } = new List<ClientTC>();
 
-        public ICollection<InfrastructureTC> Infrastructures { get; set; } = new List<InfrastructureTC>();
+        public IISGroup IIS { get; set; }
+
+        public FSXTC FSX { get; set; }
+
+        public RabbitMQTC RabbitMQ { get; set; }
 
     }
 
@@ -15,20 +21,6 @@
         public string? DistrictName { get; set; }
 
         public string? ImportSite { get; set; }
-
-    }
-
-    public class InfrastructureTC
-    {
-        public string Name { get; set; }
-
-        public ICollection<ClientTC> Clients { get; set; }
-
-        public IISGroup IIS { get; set; }
-
-        public FSXTC FSX { get; set; }
-
-        public RabbitMQTC RabbitMQ { get; set; }
 
     }
 
