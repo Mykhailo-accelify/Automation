@@ -4,56 +4,58 @@
     {
         public string Domain { get; set; }
 
-        public ICollection<Client> Clients { get; set; }
+        public ICollection<ClientTC> Clients { get; set; }
 
-        public ICollection<Infrastructure> Infrastructures { get; set; }
-
-    }
-
-    public class Client
-    {
-        public string DistrictName { get; set; }
-
-        public string ImportSite { get; set; }
+        public ICollection<InfrastructureTC> Infrastructures { get; set; } = new List<InfrastructureTC>();
 
     }
 
-    public class Infrastructure
+    public class ClientTC
     {
-        public ICollection<string> Clients { get; set; }
+        public string? DistrictName { get; set; }
+
+        public string? ImportSite { get; set; }
+
+    }
+
+    public class InfrastructureTC
+    {
+        public string Name { get; set; }
+
+        public ICollection<ClientTC> Clients { get; set; }
 
         public IISGroup IIS { get; set; }
 
-        public FSX FSX { get; set; }
+        public FSXTC FSX { get; set; }
 
-        public RabbitMQ RabbitMQ { get; set; }
+        public RabbitMQTC RabbitMQ { get; set; }
 
     }
 
     public class IISGroup
     {
-        public IIS Import { get; set; }
+        public IEnumerable<IISTC> Import { get; set; }
 
-        public IIS Web { get; set; }
-
-    }
-    public class IIS
-    {
-        public string Host { get; set; }
+        public IEnumerable<IISTC> Web { get; set; }
 
     }
-
-    public class FSX
+    public class IISTC
     {
-        public string Host { get; set; }
-
-        public string Folder { get; set; }
+        public string? Host { get; set; }
 
     }
 
-    public class RabbitMQ
+    public class FSXTC
     {
-        public string URL { get; set; }
+        public string? Host { get; set; }
+
+        public string? Folder { get; set; }
+
+    }
+
+    public class RabbitMQTC
+    {
+        public string? URL { get; set; }
 
     }
 }

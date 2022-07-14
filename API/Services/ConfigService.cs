@@ -4,6 +4,7 @@
     using API.Models;
     using API.Models.TeamCity;
     using DataAccess.Entities;
+    using System.Collections.Generic;
     using System.Xml;
 
     public class ConfigService : IConfigService
@@ -346,16 +347,120 @@
             return cfg;
         }
 
-        public async Task<TeamCityDeleteConfiguration?> GenerateTeamCityDeleteConfiguration(IEnumerable<string> clients)
+
+        public async Task<TeamCityDeleteConfiguration?> GenerateTeamCityDeleteConfiguration(IEnumerable<string> names)
         {
-            var clients = await clientService.GetAll();
-            if (client is null)
+            var clients = await clientService.GetRange(names);
+            if (clients is null)
             {
-                logger.LogError($"{nameof(Client)} not found with {clientId} id.");
+                logger.LogError($"{nameof(Client)} not found.");
                 return default;
             }
 
+            string[] constKeys = {
+                ConfigVariables.RabbitType,
+                ConfigVariables.IISType,
+                ConfigVariables.IISImportToolType,
+                ConfigVariables.LoadBalancerWebType,
+                ConfigVariables.LoadBalancerImportType,
+                ConfigVariables.FSXType,
+                ConfigVariables.DBListenerType,
+                ConfigVariables.Domain,
+                ConfigVariables.SubDomain,
+                ConfigVariables.RootDomain,
+                ConfigVariables.DatabaseNameSuffix
+            };
+            var constants = constantService.GetRange(constKeys);
+
+            string[] varKeys = {
+                ConfigVariables.DistrictNameTemplate,
+                ConfigVariables.DistrictNameImportTemplate
+            };
+            var variables = variablesService.GetRange(varKeys);
+
+            var cfg = new TeamCityDeleteConfiguration();
+            foreach (var client in clients)
+            {
+                foreach (var infrastructure in client.Infrastructures)
+                {
+                    if (!cfg.Infrastructures.Where(i => i.Name == infrastructure.Name).Any())
+                    {
+                        cfg.Infrastructures.Add(new InfrastructureTC()
+                        {
+                            Name = infrastructure.Name,
+
+                            IIS = new IISGroup()
+                            {
+                                Web = infrastructure.Instances
+                                .Where(i => i.TypeInstance.Name == constants[ConfigVariables.IISType])
+                                .Select(iis => new IISTC() { Host = iis.Endpoint }),
+
+                                Import = infrastructure.Instances
+                                .Where(i => i.TypeInstance.Name == constants[ConfigVariables.IISImportToolType])
+                                .Select(iis => new IISTC() { Host = iis.Endpoint })
+                            },
+
+                            FSX = new FSXTC()
+                            {
+                                Host = infrastructure.Instances
+                                .Where(i => i.TypeInstance.Name == constants[ConfigVariables.FSXType])
+                                .SingleOrDefault()?
+                                .Endpoint,
+
+                                Folder = GenerateFSXFolderName(infrastructure)
+                            },
+
+                            RabbitMQ = new RabbitMQTC()
+                            {
+                                URL = infrastructure.Instances
+                                .Where(i => i.TypeInstance.Name == constants[ConfigVariables.RabbitType])
+                                .SingleOrDefault()?
+                                .Endpoint
+                            }
+                        });
+                    }
+
+                    var parameters = new Dictionary<string, string>(new[]
+                    {
+                       ConfigVariables.Abbreviation(client),
+                       ConfigVariables.Abbreviation(client.State)
+                    });
+                    cfg.Infrastructures
+                        .Where(i => i.Name == infrastructure.Name)
+                        .FirstOrDefault()?
+                        .Clients
+                        .Add(new ClientTC()
+                        {
+                            DistrictName = await FillTemplate(variables[ConfigVariables.DistrictNameTemplate], parameters),
+                            ImportSite = await FillTemplate(variables[ConfigVariables.DistrictNameImportTemplate], parameters)
+                        });
+                }
+            }
+
+            return cfg;
         }
+
+        private async Task<string?> FillTemplate(string template, IDictionary<string, string> parameters)
+        {
+            var constant = await constantService.Get(ConfigVariables.ParametrTemplate);
+            if (constant is null
+                || !constant.HasValue)
+            {
+                logger.LogError($"{ConfigVariables.ParametrTemplate} constant not found in database.");
+                return null;
+            }
+
+            var templateParameter = constant.Value.Value;
+
+            foreach (var param in parameters)
+            {
+                var oldValue = string.Format(templateParameter, param.Key);
+                template.Replace(oldValue, param.Value);
+            }
+
+            return template;
+        }
+        
 
         private char? GenerateDiskLetter(string seqence, string current)
         {

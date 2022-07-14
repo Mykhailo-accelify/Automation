@@ -1,6 +1,6 @@
 ﻿namespace API.Services
 {
-    using API.Interfaces;
+    using DataAccess.Entities;
 
     public class ConfigVariables
     {
@@ -55,7 +55,17 @@
         internal static string VirtualHostTemplate = nameof(VirtualHostTemplate);
         internal static string DatabaseNameTemplate = nameof(DatabaseNameTemplate);
         internal static string NetworkPathTemplate = nameof(NetworkPathTemplate);   
-        
+        internal static string DistrictNameTemplate = nameof(DistrictNameTemplate);
+        internal static string DistrictNameImportTemplate = nameof(DistrictNameImportTemplate);
+        internal static string ParametrTemplate = nameof(ParametrTemplate);
+
+        //Parameters
+        internal static KeyValuePair<string, string> Abbreviation(Client client) => 
+            new KeyValuePair<string, string>($"{nameof(Client)}{nameof(Abbreviation)}", client.Abbreviation);
+        internal static KeyValuePair<string, string> Abbreviation(State state) =>
+            new KeyValuePair<string, string>($"{nameof(State)}{nameof(Abbreviation)}", state.Abbreviation);
+
+
         //Placehodler
         internal static string FSXPlacehodler = "{FSX}";
     }

@@ -58,6 +58,16 @@
                 .FirstOrDefaultAsync(i => i.Name == name);
         }
 
+        public async Task<IEnumerable<Client>?> GetRange(IEnumerable<string> names)
+        {
+            return await context.Client
+                .Where(c => names.Contains(c.Name))
+                .Include(c => c.State)
+                .Include(c => c.Infrastructures)
+                .ThenInclude(i => i.Instances)
+                .ToArrayAsync();
+        }
+
         public async Task<Client?> Create(Client client)
         {
             if (client?.State is null)

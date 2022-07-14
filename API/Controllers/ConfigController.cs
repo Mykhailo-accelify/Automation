@@ -92,9 +92,9 @@
         [HttpDelete("tc")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TeamCityConfiguration))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetTeamCityDeleteConfiguration([FromBody] IEnumerable<string> clients)
+        public async Task<IActionResult> GetTeamCityDeleteConfiguration([FromBody] IEnumerable<string> names)
         {
-            var result = await configService.GenerateTeamCityDeleteConfiguration(clients);
+            var result = await configService.GenerateTeamCityDeleteConfiguration(names);
             if (result is null)
             {
                 return BadRequest($"Error during TeamCity delete configuration generation, check log");
