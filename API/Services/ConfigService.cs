@@ -1,8 +1,8 @@
 ﻿namespace API.Services
 {
-    using API.Interfaces;
-    using API.Models;
-    using API.Models.TeamCity;
+    using Interfaces;
+    using Models;
+    using Models.TeamCity;
     using DataAccess.Entities;
     using System.Collections.Generic;
     using System.Xml;
@@ -12,14 +12,12 @@
         private XmlDocument Config { get; } = new XmlDocument();
 
         private readonly ILogger logger;
-        private readonly Context context;
         private readonly IConstantService<APIConstant> constantService;
         private readonly IConstantService<InfrastructureVariable> variablesService;
         private readonly IClientService clientService;
         private readonly IInfrastructureService infrastructureService;
 
         public ConfigService(
-            Context context,
             ILogger<ConfigService> logger,
             IConstantService<APIConstant> constantService,
             IConstantService<InfrastructureVariable> variablesService,
@@ -28,7 +26,6 @@
             )
         {
             this.logger = logger;
-            this.context = context;
             this.constantService = constantService;
             this.variablesService = variablesService;
             this.clientService = clientService;
@@ -151,8 +148,7 @@
             {
                 return default;
             }
-
-            var databaseClientVariable = char.ToUpper(client.Abbreviation[0]) + client.Abbreviation.Substring(1).ToLower();
+            
             InsertText(constants[ConfigVariables.DatabaseNameXPath],
                 CreateDatabaseName(databaseNameTemplate.Value.Value, client, infrastructure, constants[ConfigVariables.DatabaseNameSuffix]));
 
@@ -204,7 +200,7 @@
             }
 
             var fsx = infrastructure.Instances.SingleOrDefault(i => i.TypeInstance.Name == constants[ConfigVariables.FSXType]);
-            var networkPath = variables[ConfigVariables.NetworkPathTemplate].Replace(ConfigVariables.FSXPlacehodler, fsx.Endpoint);
+            var networkPath = variables[ConfigVariables.NetworkPathTemplate].Replace(ConfigVariables.FSXPlacehodler, fsx?.Endpoint);
             InsertText(constants[ConfigVariables.NetworkPathXPath], networkPath);
             InsertText(constants[ConfigVariables.AutoImportPathXPath], networkPath);
 
@@ -311,18 +307,18 @@
             cfg.DatabaseName = CreateDatabaseName(variables[ConfigVariables.DatabaseNameTemplate], client, infrastructure, constants[ConfigVariables.DatabaseNameSuffix]);
 
             cfg.SiteIISs = new List<IIS>();
-            var IISs = infrastructure.Instances.Where(i => i.TypeInstance.Name == constants[ConfigVariables.IISType]);
-            foreach (var IIS in IISs)
+            var iiSs = infrastructure.Instances.Where(i => i.TypeInstance.Name == constants[ConfigVariables.IISType]);
+            foreach (var iis in iiSs)
             {
                 cfg.SiteIISs.Add(new IIS
                 {
-                    HostName = IIS.Endpoint,
-                    UserName = IIS.Secret,
-                    UserPassword = IIS.Secret
+                    HostName = iis.Endpoint,
+                    UserName = iis.Secret,
+                    UserPassword = iis.Secret
                 });
             }
 
-            if (client.Products.Where(p => p.Name == ConfigVariables.ImportProduct).Any())
+            if (client.Products.Any(p => p.Name == ConfigVariables.ImportProduct))
             {
                 var loadBalancerImport = infrastructure.Instances.SingleOrDefault(i => i.TypeInstance.Name == constants[ConfigVariables.LoadBalancerImportType]);
                 cfg.LoadBalancerImport = loadBalancerImport?.Endpoint;
@@ -331,14 +327,14 @@
                     client.State.Abbreviation.ToLower());
 
                 cfg.ImportToolIISs = new List<IIS>();
-                IISs = infrastructure.Instances.Where(i => i.TypeInstance.Name == constants[ConfigVariables.IISImportToolType]);
-                foreach (var IIS in IISs)
+                iiSs = infrastructure.Instances.Where(i => i.TypeInstance.Name == constants[ConfigVariables.IISImportToolType]);
+                foreach (var iis in iiSs)
                 {
                     cfg.ImportToolIISs.Add(new IIS
                     {
-                        HostName = IIS.Endpoint,
-                        UserName = IIS.Secret,
-                        UserPassword = IIS.Secret
+                        HostName = iis.Endpoint,
+                        UserName = iis.Secret,
+                        UserPassword = iis.Secret
                     });
                 }
 
@@ -381,7 +377,7 @@
             {
                 foreach (var infrastructure in client.Infrastructures)
                 {
-                    if (!infrastructures.Where(i => i.Name == infrastructure.Name).Any())
+                    if (infrastructures.All(i => i.Name != infrastructure.Name))
                     {
                         infrastructures.Add(new InfrastructureTC()
                         {
@@ -405,8 +401,7 @@
                             FSX = new FSXTC()
                             {
                                 Host = infrastructure.Instances
-                                .Where(i => i.TypeInstance.Name == constants[ConfigVariables.FSXType])
-                                .SingleOrDefault()?
+                                    .SingleOrDefault(i => i.TypeInstance.Name == constants[ConfigVariables.FSXType])?
                                 .Endpoint,
 
                                 Folder = GenerateFSXFolderName(infrastructure)
@@ -415,8 +410,7 @@
                             RabbitMQ = new RabbitMQTC()
                             {
                                 URL = infrastructure.Instances
-                                .Where(i => i.TypeInstance.Name == constants[ConfigVariables.RabbitType])
-                                .SingleOrDefault()?
+                                    .SingleOrDefault(i => i.TypeInstance.Name == constants[ConfigVariables.RabbitType])?
                                 .Endpoint
                             }
                         });
@@ -428,8 +422,7 @@
                        ConfigVariables.Abbreviation(client.State)
                     });
                     infrastructures
-                        .Where(i => i.Name == infrastructure.Name)
-                        .FirstOrDefault()?
+                        .SingleOrDefault(i => i.Name == infrastructure.Name)?
                         .Clients
                         .Add(new ClientTC()
                         {
@@ -445,8 +438,7 @@
         private async Task<string?> FillTemplate(string template, IDictionary<string, string> parameters)
         {
             var constant = await constantService.Get(ConfigVariables.ParametrTemplate);
-            if (constant is null
-                || !constant.HasValue)
+            if (constant is null || !constant.HasValue)
             {
                 logger.LogError($"{ConfigVariables.ParametrTemplate} constant not found in database.");
                 return null;
@@ -467,7 +459,7 @@
 
         private char? GenerateDiskLetter(string seqence, string current)
         {
-            var index = seqence.IndexOf(current);
+            var index = seqence.IndexOf(current, StringComparison.Ordinal);
             index++;
 
             if (index >= seqence.Length)

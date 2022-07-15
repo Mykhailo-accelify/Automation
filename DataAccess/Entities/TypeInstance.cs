@@ -1,9 +1,13 @@
-﻿namespace DataAccess.Entities
-{
-    using DataAccess.Models.Identified;
+﻿using DataAccess.Models.Interfaces;
+using DataAccess.Models.Interfaces.Relationships.Primitives;
 
-    public class TypeInstance : TypeInstanceIdentified
-    {
-        public virtual ICollection<Instance> Instances { get; set; }
-    }
+namespace DataAccess.Entities;
+
+public class TypeInstance : IType, IRelationshipInstances
+{
+    public int Id { get; set; }
+    
+    public string Name { get; set; }
+    
+    public virtual ICollection<Instance> Instances { get; set; }
 }

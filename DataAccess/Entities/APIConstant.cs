@@ -1,13 +1,14 @@
-﻿namespace DataAccess.Entities
-{
-    using DataAccess.Models.Base;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace DataAccess.Entities;
 
-    public class APIConstant : APIConstantBase
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public new string Name { get; set; }
-    }
+using Models.Interfaces;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+public class APIConstant : IKeyValue
+{
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public new string Name { get; set; }
+
+    public string Value { get; set; }
 }

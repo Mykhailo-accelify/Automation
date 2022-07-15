@@ -18,18 +18,18 @@
 
         public RabbitMQ RabbitMQ { get; set; }
 
-        public string LoadBalancerWeb { get; set; }
+        public string? LoadBalancerWeb { get; set; }
 
-        public string LoadBalancerImport { get; set; }
+        public string? LoadBalancerImport { get; set; }
 
-        public string FSXDNS { get; set; }
+        public string? FSXDNS { get; set; }
 
-        public string DatabaseListenerName { get; set; }
+        public string? DatabaseListenerName { get; set; }
 
-        public string DatabaseName { get; set; }
+        public string? DatabaseName { get; set; }
         
         public string EnvironmentFolder { get; set; }
 
-        public string FSXFolder { get; set; }        
+        public string? FSXFolder { get; set; }        
     }
 }

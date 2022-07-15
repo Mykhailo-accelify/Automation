@@ -1,15 +1,19 @@
-﻿namespace DataAccess.Entities
+﻿using DataAccess.Models.Interfaces;
+
+namespace DataAccess.Entities
 {
     using DataAccess.Models.Base;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class InfrastructureVariable : InfrastructureVariableBase
+    public class InfrastructureVariable : IInfrastructureVariables
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public new string Name { get; set; }
+        public string Name { get; set; }
 
-        public Infrastructure Infrastructure { get; set; }
+        public string Value { get; set; }
+        
+        public ICollection<Infrastructure> Infrastructures { get; set; }
     }
 }

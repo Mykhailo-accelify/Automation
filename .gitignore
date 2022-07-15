@@ -351,3 +351,4 @@ MigrationBackup/
 
 API/appsettings.json
 API/appsettings.Development.json
+/.idea/.idea.spm-svc-deployment-api/.idea

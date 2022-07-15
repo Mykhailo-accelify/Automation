@@ -1,11 +1,14 @@
-﻿namespace DataAccess.Entities
+﻿using DataAccess.Models.Interfaces;
+
+namespace DataAccess.Entities;
+
+public class State : IState
 {
-    using DataAccess.Models.Identified;
-
-    public class State : StateIdentified
-    {
-        //public ICollection<Infrastructure>? Infrastructures { get; set; }
-
-        //public ICollection<Client>? Clients { get; set; }
-    }
+    public int Id { get; set; }
+    
+    public string Name { get; set; }
+    
+    public string Abbreviation { get; set; }
+    
+    public ICollection<Client> Clients { get; set; }
 }
