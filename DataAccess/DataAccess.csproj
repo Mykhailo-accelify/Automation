@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Interfaces\Primitives\" />
-    <Folder Include="Models\Interfaces\Relationships\Primitives\" />
   </ItemGroup>
 
 </Project>

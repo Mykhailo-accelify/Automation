@@ -5,7 +5,7 @@ namespace DataAccess.Models.Interfaces.Relationships;
 public interface IInfrastructureRelationships : IRelationshipTypeInfrastructure,
     IRelationshipClients,
     IRelationshipInstances,
-    IRelationshipState,
+    //IRelationshipState,
     IRelationshipInfrastructureVariables
 {
     

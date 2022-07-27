@@ -14,14 +14,6 @@ public sealed class Infrastructure : IInfrastructure
 
     [StringLength(20)]
     public new string ConfigurationFolder { get; set; }
-
-    //[ForeignKey(nameof(State))]
-    //[Column(nameof(InfrastructureStateId))]
-    //public virtual int InfrastructureStateId { get; set; }
-    //[ForeignKey("StateId")]
-    public int StateId { get; set; }
-    
-    public State State { get; set; }
     
     public int TypeInfrastructureId { get; set; }
     

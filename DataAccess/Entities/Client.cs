@@ -21,9 +21,10 @@ public class Client : IClient
     //[Column(nameof(ClientStateId))]
     //public virtual int ClientStateId { get; set; }
 
+    [Column(nameof(StateId))]
     public int StateId { get; set; }
 
-    //[ForeignKey("StateId")]
+    [ForeignKey(nameof(StateId))]
     public virtual State State { get; set; }
 
     public virtual ICollection<Product> Products { get; set; }

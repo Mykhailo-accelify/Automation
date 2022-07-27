@@ -12,19 +12,19 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder
-                .Entity<Infrastructure>()
-                .HasOne(i => i.State)
-                .WithMany()
-                .HasForeignKey(c => c.StateId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder
+            //    .Entity<Infrastructure>()
+            //    .HasOne(i => i.State)
+            //    .WithMany()
+            //    .HasForeignKey(c => c.StateId)
+            //    .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder
-                .Entity<Client>()
-                .HasOne(c => c.State)
-                .WithMany()                
-                .HasForeignKey(c => c.StateId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder
+            //    .Entity<Client>()
+            //    .HasOne(c => c.State)
+            //    .WithMany()                
+            //    .HasForeignKey(c => c.StateId)
+            //    .OnDelete(DeleteBehavior.NoAction);
 
             //    .HasMany(i => i.Clients)
             //    .
