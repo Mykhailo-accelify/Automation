@@ -1,12 +1,12 @@
 ﻿namespace API.Controllers
 {
     using API.Interfaces;
-    using API.Models;
     using AutoMapper;
     using DataAccess.Entities;
     using Microsoft.AspNetCore.Mvc;
     using DataAccess.Models.Base;
     using API.Athentication;
+    using API.Models.Old;
 
     [ApiController]
     [ServiceAuthorize]

@@ -2,8 +2,8 @@
 {
     using API.Athentication;
     using API.Interfaces;
-    using API.Models;
     using API.Models.Client;
+    using API.Models.Old;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]

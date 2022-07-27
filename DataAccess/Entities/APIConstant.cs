@@ -1,6 +1,6 @@
 ﻿namespace DataAccess.Entities;
 
-using Models.Interfaces;
+using Models.Interfaces.Primitives;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

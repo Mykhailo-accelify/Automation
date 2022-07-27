@@ -3,12 +3,7 @@ using DataAccess.Models.Interfaces.Relationships;
 
 namespace DataAccess.Models.Interfaces;
 
-public interface IInfrastructure : IIdentified, INamed, IInfrastructureRelationships
+public interface IInfrastructure : IIdentified, IInfrastructureColumns, IInfrastructureRelationships
 {
-
-    public int MaxStudents { get; set; }
-
-    public string ConfigurationFolder { get; set; }
-
 
 }

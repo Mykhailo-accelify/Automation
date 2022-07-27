@@ -1,7 +1,10 @@
-﻿namespace API.Profile
+﻿using API.Models.Shallow;
+using API.Models.Unidentified;
+
+namespace API.Profile
 {
-    using API.Models;
     using API.Models.Client;
+    using API.Models.Old;
     using AutoMapper;
     using DataAccess.Entities;
     using DataAccess.Models.Base;
@@ -11,7 +14,7 @@
     {
         public AutomatizationProfile()
         {            
-            CreateMap<ClientPost, Client>();
+            CreateMap<IUnidentifiedClient, Client>();
             CreateMap<NameModel, Infrastructure>();
             CreateMap<NameModel, State>();
             CreateMap<NameModel, Product>();
@@ -20,7 +23,7 @@
             CreateMap<InstancePut, Instance>();
             CreateMap<ClientPut, Client>();
 
-            CreateMap<Client, ClientOneNested>()
+            CreateMap<Client, IShallowClient>()
                 .ReverseMap();
             CreateMap<Infrastructure, InfrastructureOneNested>();
             CreateMap<Configuration, ConfigurationOneNested>();

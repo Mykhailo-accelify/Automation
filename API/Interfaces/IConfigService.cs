@@ -1,7 +1,7 @@
 ﻿namespace API.Interfaces
 {
-    using API.Models;
     using API.Models.Client;
+    using API.Models.Old;
     using API.Models.TeamCity;
     using System.Xml;
 

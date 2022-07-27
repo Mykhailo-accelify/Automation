@@ -2,7 +2,7 @@
 {
     using API.Athentication;
     using API.Interfaces;
-    using API.Models;
+    using API.Models.Old;
     using AutoMapper;
     using DataAccess.Entities;
     using DataAccess.Models.Base;

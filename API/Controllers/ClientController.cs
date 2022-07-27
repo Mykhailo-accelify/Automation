@@ -1,9 +1,12 @@
-﻿namespace API.Controllers
+﻿using API.Models.Shallow;
+using API.Models.Unidentified;
+
+namespace API.Controllers
 {
     using API.Athentication;
     using API.Interfaces;
-    using API.Models;
     using API.Models.Client;
+    using API.Models.Old;
     using AutoMapper;
     using DataAccess.Entities;
     using Microsoft.AspNetCore.Mvc;
@@ -67,9 +70,9 @@
 
         [HttpPost]
         //[TeamCityAuthorize]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ClientOneNested))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IShallowClient))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] ClientPost item)
+        public async Task<IActionResult> Post([FromBody] IUnidentifiedClient item)
         {
             var result = await service.Create(mapper.Map<Client>(item));
             if (result is null)
@@ -77,7 +80,7 @@
                 return BadRequest($"Error during {nameof(Client)} creation, check log");
             }
 
-            var client = mapper.Map<ClientOneNested>(result);
+            var client = mapper.Map<IShallowClient>(result);
             return CreatedAtAction(nameof(Get), new { id = client.Id }, client);
         }
 

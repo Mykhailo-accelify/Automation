@@ -3,8 +3,7 @@ using DataAccess.Models.Interfaces.Relationships;
 
 namespace DataAccess.Models.Interfaces;
 
-public interface IInfrastructureVariables : IKeyValue,
-    IInfrastructureVariablesRelationships
+public interface IInfrastructureVariables : IKeyValue, IInfrastructureVariablesRelationships
 {
 
 }

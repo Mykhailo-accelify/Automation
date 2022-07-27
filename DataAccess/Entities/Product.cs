@@ -1,12 +1,15 @@
-﻿namespace DataAccess.Entities
+﻿using DataAccess.Models.Interfaces;
+
+namespace DataAccess.Entities
 {
-    using DataAccess.Models.Identified;
     using System.ComponentModel.DataAnnotations;
 
-    public class Product : ProductIdentified
+    public class Product : IProduct
     {
+        public int Id { get; set; }
+
         [StringLength(50)]
-        public new string Name { get; set; }
+        public string Name { get; set; }
 
         public virtual ICollection<Client> Clients { get; set; }
     }

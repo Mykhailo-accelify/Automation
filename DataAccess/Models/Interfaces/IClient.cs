@@ -3,8 +3,7 @@ using DataAccess.Models.Interfaces.Relationships;
 
 namespace DataAccess.Models.Interfaces;
 
-public interface IClient : IIdentified, INamed, IAbbreviated, IClientRelationships
+public interface IClient : IIdentified, IClientColumns, IClientRelationships
 {
-    public int AmountStudents { get; set; }
-    
+
 }

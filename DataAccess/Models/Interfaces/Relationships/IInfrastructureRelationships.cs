@@ -2,7 +2,8 @@
 
 namespace DataAccess.Models.Interfaces.Relationships;
 
-public interface IInfrastructureRelationships : IRelationshipTypeInfrastructure,
+public interface IInfrastructureRelationships :
+    IRelationshipTypeInfrastructure,
     IRelationshipClients,
     IRelationshipInstances,
     //IRelationshipState,

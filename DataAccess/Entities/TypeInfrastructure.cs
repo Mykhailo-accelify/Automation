@@ -1,10 +1,8 @@
 ﻿using DataAccess.Models.Interfaces;
-using DataAccess.Models.Interfaces.Relationships;
-using DataAccess.Models.Interfaces.Relationships.Primitives;
 
 namespace DataAccess.Entities;
 
-public class TypeInfrastructure : IType, IRelationshipInfrastructures
+public class TypeInfrastructure : ITypeInfrastructure
 {
     public int Id { get; set; }
     

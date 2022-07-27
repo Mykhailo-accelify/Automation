@@ -8,6 +8,7 @@ namespace API.Services
     using DataAccess.Entities;
     using System.Collections.Generic;
     using System.Xml;
+    using API.Models.Old;
 
     public class ConfigService : IConfigService
     {

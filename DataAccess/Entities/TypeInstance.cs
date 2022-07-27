@@ -1,9 +1,8 @@
 ﻿using DataAccess.Models.Interfaces;
-using DataAccess.Models.Interfaces.Relationships.Primitives;
 
 namespace DataAccess.Entities;
 
-public class TypeInstance : IType, IRelationshipInstances
+public class TypeInstance : ITypeInstance
 {
     public int Id { get; set; }
     
