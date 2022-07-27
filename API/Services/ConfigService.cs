@@ -1,4 +1,6 @@
-﻿namespace API.Services
+﻿using API.Models.Client;
+
+namespace API.Services
 {
     using Interfaces;
     using Models;
