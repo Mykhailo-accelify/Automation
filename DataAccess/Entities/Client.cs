@@ -10,7 +10,7 @@
         [StringLength(50)]
         public override string Name { get; set; }
 
-        [StringLength(20)]
+        [StringLength(50)]
         public override string Abbreviation { get; set; }
 
         //[ForeignKey(nameof(ClientState))]

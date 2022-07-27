@@ -3,6 +3,7 @@
     using API.Athentication;
     using API.Interfaces;
     using API.Models;
+    using API.Models.Client;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
@@ -92,9 +93,9 @@
         [HttpDelete("tc")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TeamCityConfiguration))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetTeamCityDeleteConfiguration([FromBody] IEnumerable<string> names)
+        public async Task<IActionResult> GetTeamCityDeleteConfiguration([FromBody] IEnumerable<ClientFind> clients)
         {
-            var result = await configService.GenerateTeamCityDeleteConfiguration(names);
+            var result = await configService.GenerateTeamCityDeleteConfiguration(clients);
             if (result is null)
             {
                 return BadRequest($"Error during TeamCity delete configuration generation, check log");

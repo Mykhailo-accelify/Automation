@@ -2,6 +2,7 @@
 {
     using API.Interfaces;
     using API.Models;
+    using API.Models.Client;
     using API.Models.TeamCity;
     using DataAccess.Entities;
     using System.Collections.Generic;
@@ -274,13 +275,15 @@
             {
                 Products = client.Products.Select(c => c.Name).ToArray(),
                 StateAbbreviation = client.State.Abbreviation,
-                Domain = string.Format(variables[ConfigVariables.DomainTemplate],
-                constants[ConfigVariables.SubDomain],
-                constants[ConfigVariables.Domain],
-                constants[ConfigVariables.RootDomain]),
-                SiteName = string.Format(variables[ConfigVariables.SiteNameTemplate],
-                client.Abbreviation,
-                client.State.Abbreviation.ToLower())
+                Domain = string.Format(
+                    variables[ConfigVariables.DomainTemplate],
+                    constants[ConfigVariables.SubDomain],
+                    constants[ConfigVariables.Domain],
+                    constants[ConfigVariables.RootDomain]),
+                SiteName = string.Format(
+                    variables[ConfigVariables.SiteNameTemplate],
+                    client.Abbreviation,
+                    client.State.Abbreviation.ToLower())
             };
 
             var rabbit = infrastructure.Instances.SingleOrDefault(i => i.TypeInstance.Name == constants[ConfigVariables.RabbitType]);
@@ -348,9 +351,10 @@
         }
 
 
-        public async Task<IEnumerable<InfrastructureTC>?> GenerateTeamCityDeleteConfiguration(IEnumerable<string> names)
+        public async Task<IEnumerable<InfrastructureTC>?> GenerateTeamCityDeleteConfiguration(IEnumerable<ClientFind> searchClients)
         {
-            var clients = await clientService.GetRange(names);
+            var clients = await clientService.GetRange(searchClients.Select(c => c.Name));
+            clients = clients?.Where(client => searchClients.Any(c => c.Name == client.Name && c.State == client.State.Abbreviation));
             if (clients is null)
             {
                 logger.LogError($"{nameof(Client)} not found.");
@@ -362,6 +366,8 @@
                 ConfigVariables.IISType,
                 ConfigVariables.IISImportToolType,
                 ConfigVariables.FSXType,
+                ConfigVariables.LoadBalancerWebType,
+                ConfigVariables.LoadBalancerImportType,
                 ConfigVariables.SubDomain,
                 ConfigVariables.Domain,
                 ConfigVariables.RootDomain
@@ -379,6 +385,8 @@
             var infrastructures = new List<InfrastructureTC>();
             foreach (var client in clients)
             {
+                var haveImport = client.Products.Any(p => p.Name == ConfigVariables.ImportProduct);
+
                 foreach (var infrastructure in client.Infrastructures)
                 {
                     if (!infrastructures.Where(i => i.Name == infrastructure.Name).Any())
@@ -386,6 +394,7 @@
                         infrastructures.Add(new InfrastructureTC()
                         {
                             Name = infrastructure.Name,
+                            PropertyFolder = infrastructure.ConfigurationFolder,
                             Domain = string.Format(variables[ConfigVariables.DomainTemplate],
                             constants[ConfigVariables.SubDomain],
                             constants[ConfigVariables.Domain],
@@ -397,9 +406,11 @@
                                 .Where(i => i.TypeInstance.Name == constants[ConfigVariables.IISType])
                                 .Select(iis => new IISTC() { Host = iis.Endpoint }),
 
-                                Import = infrastructure.Instances
-                                .Where(i => i.TypeInstance.Name == constants[ConfigVariables.IISImportToolType])
-                                .Select(iis => new IISTC() { Host = iis.Endpoint })
+                                Import = haveImport
+                                ? infrastructure.Instances
+                                    .Where(i => i.TypeInstance.Name == constants[ConfigVariables.IISImportToolType])
+                                    .Select(iis => new IISTC() { Host = iis.Endpoint })
+                                : null
                             },
 
                             FSX = new FSXTC()
@@ -418,8 +429,29 @@
                                 .Where(i => i.TypeInstance.Name == constants[ConfigVariables.RabbitType])
                                 .SingleOrDefault()?
                                 .Endpoint
+                            },
+
+                            LB = new LoadBalancerGroupTC()
+                            {
+                                Web = new LoadBalancerTC()
+                                {
+                                    URL = infrastructure.Instances
+                                        .Where(i => i.TypeInstance.Name == constants[ConfigVariables.LoadBalancerWebType])
+                                        .SingleOrDefault()?
+                                        .Endpoint
+                                },
+
+                                Import = haveImport
+                                ? new LoadBalancerTC()
+                                {
+                                    URL = infrastructure.Instances
+                                        .Where(i => i.TypeInstance.Name == constants[ConfigVariables.LoadBalancerImportType])
+                                        .SingleOrDefault()?
+                                        .Endpoint
+                                }
+                                : null
                             }
-                        });
+                        });;
                     }
 
                     var parameters = new Dictionary<string, string>(new[]
@@ -433,8 +465,11 @@
                         .Clients
                         .Add(new ClientTC()
                         {
-                            DistrictName = (await FillTemplate(variables[ConfigVariables.DistrictNameTemplate], parameters))?.ToLower(),
-                            ImportSite = (await FillTemplate(variables[ConfigVariables.DistrictNameImportTemplate], parameters))?.ToLower()
+                            Name = client.State.Abbreviation + " " + client.Name,
+                            WebSite = (await FillTemplate(variables[ConfigVariables.DistrictNameTemplate], parameters))?.ToLower(),
+                            ImportSite = haveImport
+                            ? (await FillTemplate(variables[ConfigVariables.DistrictNameImportTemplate], parameters))?.ToLower()
+                            : null
                         });
                 }
             }

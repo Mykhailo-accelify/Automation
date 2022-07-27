@@ -9,14 +9,14 @@
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
-    [ServiceAuthorize]
+    //[ServiceAuthorize]
     [Route("api/[controller]")]
     public class ClientController : ControllerBase
     {
         private readonly IMapper mapper;
-        private readonly ICRUDService<Client> service;
+        private readonly IClientService service;
 
-        public ClientController(IMapper mapper, ICRUDService<Client> service)
+        public ClientController(IMapper mapper, IClientService service)
         {
             this.mapper = mapper;
             this.service = service;
@@ -36,6 +36,21 @@
             return Ok(mapper.Map<IEnumerable<ClientOneNested>>(clients));
         }
 
+        [HttpGet("name/{name}")]
+        //[TeamCityAuthorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ClientOneNested>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get(string name)
+        {
+            var client = await service.Get(name);
+            if (client is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(mapper.Map<ClientOneNested>(client));
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ClientOneNested))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -51,7 +66,7 @@
         }
 
         [HttpPost]
-        [TeamCityAuthorize]
+        //[TeamCityAuthorize]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ClientOneNested))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] ClientPost item)
