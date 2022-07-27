@@ -1,6 +1,7 @@
 ﻿namespace API.Services
 {
     using API.Interfaces;
+    using API.Models.Client;
     using DataAccess.Entities;
     using Microsoft.EntityFrameworkCore;
 
@@ -61,8 +62,9 @@
         public async Task<IEnumerable<Client>?> GetRange(IEnumerable<string> names)
         {
             return await context.Client
-                .Where(c => names.Contains(c.Name))
+                .Where(c => names.Any(name => name == c.Name))
                 .Include(c => c.State)
+                .Include(c => c.Products)
                 .Include(c => c.Infrastructures)
                 .ThenInclude(i => i.TypeInfrastructure)
                 .Include(c => c.Infrastructures)

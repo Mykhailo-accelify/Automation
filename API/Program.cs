@@ -27,10 +27,10 @@ builder.AddApplicationAuthentication();
 
 var app = builder.Build();
 
+app.UseSwagger();
+app.UseSwaggerUI();
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
 
     using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;

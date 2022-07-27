@@ -14,8 +14,8 @@ public class Client : IClient
     [StringLength(50)]
     public string Name { get; set; }
 
-    [StringLength(20)]
-    public string Abbreviation { get; set; }
+        [StringLength(50)]
+        public override string Abbreviation { get; set; }
 
     //[ForeignKey(nameof(ClientState))]
     //[Column(nameof(ClientStateId))]

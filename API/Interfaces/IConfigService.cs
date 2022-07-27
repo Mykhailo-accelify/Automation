@@ -1,6 +1,7 @@
 ﻿namespace API.Interfaces
 {
     using API.Models;
+    using API.Models.Client;
     using API.Models.TeamCity;
     using System.Xml;
 
@@ -16,6 +17,6 @@
 
         public Task<TeamCityConfiguration?> GenerateTeamCityConfiguration(int clientId, string infrastructureName);
 
-        public Task<IEnumerable<InfrastructureTC>?> GenerateTeamCityDeleteConfiguration(IEnumerable<string> names);
+        public Task<IEnumerable<InfrastructureTC>?> GenerateTeamCityDeleteConfiguration(IEnumerable<ClientFind> clietns);
     }
 }
