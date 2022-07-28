@@ -23,7 +23,7 @@ namespace API.Profile
             CreateMap<InstancePut, Instance>();
             CreateMap<ClientPut, Client>();
 
-            CreateMap<Client, IShallowClient>()
+            CreateMap<Client, ShallowClient>()
                 .ReverseMap();
             CreateMap<Infrastructure, InfrastructureOneNested>();
             CreateMap<Configuration, ConfigurationOneNested>();

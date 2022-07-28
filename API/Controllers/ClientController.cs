@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ClientOneNested>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ShallowClient>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get()
         {
@@ -36,7 +36,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(mapper.Map<IEnumerable<ClientOneNested>>(clients));
+            return Ok(mapper.Map<IEnumerable<ShallowClient>>(clients));
         }
 
         [HttpGet("name/{name}")]
@@ -70,7 +70,7 @@ namespace API.Controllers
 
         [HttpPost]
         //[TeamCityAuthorize]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IShallowClient))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ShallowClient))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] IUnidentifiedClient item)
         {
@@ -80,7 +80,7 @@ namespace API.Controllers
                 return BadRequest($"Error during {nameof(Client)} creation, check log");
             }
 
-            var client = mapper.Map<IShallowClient>(result);
+            var client = mapper.Map<ShallowClient>(result);
             return CreatedAtAction(nameof(Get), new { id = client.Id }, client);
         }
 
