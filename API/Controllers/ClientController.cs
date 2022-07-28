@@ -3,6 +3,7 @@ using API.Models.Shallow;
 using API.Athentication;
 using API.Interfaces.Services;
 using API.Models.Lonely;
+using API.Models.Shallow.Primitives;
 using AutoMapper;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ public class ClientController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<LonelyClient>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ILonelyClient>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get()
     {
@@ -34,7 +35,7 @@ public class ClientController : ControllerBase
             return NotFound();
         }
 
-        return Ok(mapper.Map<IEnumerable<LonelyClient>>(clients));
+        return Ok(mapper.Map<IEnumerable<ILonelyClient>>(clients));
     }
 
     [HttpGet("name/{name}")]

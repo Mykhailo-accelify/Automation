@@ -2,6 +2,7 @@
 using API.Models.Lonely;
 using API.Models.Old;
 using API.Models.Shallow;
+using API.Models.Shallow.Primitives;
 using API.Models.Unidentified;
 using AutoMapper;
 using DataAccess.Entities;
@@ -58,9 +59,9 @@ public class AutomationProfile : Profile
             .ReverseMap();
         CreateMap<CreateClient, Client>();
 
-        CreateMap<Client, LonelyClient>();
-        CreateMap<Product, LonelyProduct>();
-        CreateMap<Infrastructure, LonelyInfrastructure>();
-        CreateMap<State, LonelyState>();
+        CreateMap<Client, ILonelyClient>().As<LonelyClient>();
+        CreateMap<Product, ILonelyProduct>().As<LonelyProduct>();
+        CreateMap<Infrastructure, ILonelyInfrastructure>().As<LonelyInfrastructure>();
+        CreateMap<State, ILonelyState>().As<LonelyState>();
     }
 }
