@@ -1,4 +1,5 @@
-﻿using API.Models.Old;
+﻿using API.Models.Create;
+using API.Models.Old;
 using API.Models.Shallow;
 using API.Models.Unidentified;
 using AutoMapper;
@@ -12,7 +13,7 @@ public class AutomationProfile : Profile
 {
     public AutomationProfile()
     {            
-        CreateMap<UnidentifiedClient, Client>();
+        CreateMap<CreateClient, Client>();
         CreateMap<NameModel, Infrastructure>();
         CreateMap<NameModel, State>();
         CreateMap<NameModel, Product>();

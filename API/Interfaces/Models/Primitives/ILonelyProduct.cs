@@ -2,7 +2,7 @@
 
 namespace API.Models.Shallow.Primitives;
 
-public interface ILonelyProduct : IProductColumns
+public interface ILonelyProduct : IIdentified, IProductColumns
 {
     
 }

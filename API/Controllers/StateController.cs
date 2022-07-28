@@ -1,43 +1,45 @@
-﻿namespace API.Controllers
+﻿using API.Models.Create;
+using API.Models.Shallow;
+
+namespace API.Controllers
 {
     using AutoMapper;
     using DataAccess.Entities;
     using Microsoft.AspNetCore.Mvc;
-    using DataAccess.Models.Base;
     using API.Athentication;
     using API.Interfaces.Services;
 
     [ApiController]
     [ServiceAuthorize]
     [Route("api/[controller]")]
-    public class StateController : ControllerBase
+    public class ShallowStateController : ControllerBase
     {
         private readonly IMapper mapper;
         private readonly IStateService service;
 
-        public StateController(IStateService service, IMapper mapper)
+        public ShallowStateController(IStateService service, IMapper mapper)
         {
             this.mapper = mapper;
             this.service = service;
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<State>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ShallowState>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get()
         {
-            var states = await service.GetAll();
-            if (!states.Any())
+            var ShallowStates = await service.GetAll();
+            if (!ShallowStates.Any())
             {
                 return NotFound();
             }
 
-            return Ok(states);
+            return Ok(ShallowStates);
         }
 
         [HttpGet("name")]
         [TeamCityAuthorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<State>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ShallowState>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetNames()
         {
@@ -51,7 +53,7 @@
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(State))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowState))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(int id)
         {
@@ -65,42 +67,42 @@
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(State))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ShallowState))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] StateBase item)
+        public async Task<IActionResult> Post([FromBody] CreateState item)
         {
             var state = await service.Create(mapper.Map<State>(item));
             if (state is null)
             {
-                return BadRequest($"Error during {nameof(State)} creation, check log");
+                return BadRequest($"Error during {nameof(state)} creation, check log");
             }
 
             return CreatedAtAction(nameof(Get), new { id = state.Id }, state);
         }
 
         [HttpPut()]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(State))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowState))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put([FromBody] State item)
+        public async Task<IActionResult> Put([FromBody] ShallowState item)
         {
-            var state = await service.Update(item);
+            var state = mapper.Map<ShallowState>(await service.Update(mapper.Map<State>(item)));
             if (state is null)
             {
-                return BadRequest($"Error during {nameof(State)} updating, check log");
+                return BadRequest($"Error during {nameof(state)} updating, check log");
             }
 
             return Ok(state);
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(State))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowState))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await service.Delete(id);
             if (result is null)
             {
-                return BadRequest($"Error during {nameof(State)} deleting, check log");
+                return BadRequest($"Error during {nameof(ShallowState)} deleting, check log");
             }
 
             return Ok(result);

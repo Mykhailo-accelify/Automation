@@ -1,19 +1,24 @@
-﻿namespace API.Controllers
+﻿using API.Models.Shallow;
+using AutoMapper;
+using DataAccess.Entities;
+
+namespace API.Controllers
 {
     using API.Athentication;
     using API.Interfaces.Services;
-    using DataAccess.Entities;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
     [ServiceAuthorize]
     [Route("api/[controller]")]
-    public class InfrastructureVariablesController : ControllerBase
+    public class ShallowInfrastructureVariablesController : ControllerBase
     {
+        private readonly IMapper mapper;
         private readonly IConstantService<InfrastructureVariable> service;
 
-        public InfrastructureVariablesController(IConstantService<InfrastructureVariable> service)
+        public ShallowInfrastructureVariablesController(IConstantService<InfrastructureVariable> service)
         {
+            this.mapper = mapper;
             this.service = service;
         }
 
@@ -22,13 +27,13 @@
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get()
         {
-            var infrastructureVariables = await service.GetAll();
-            if (!infrastructureVariables.Any())
+            var ShallowInfrastructureVariables = await service.GetAll();
+            if (!ShallowInfrastructureVariables.Any())
             {
                 return NotFound();
             }
 
-            return Ok(infrastructureVariables);
+            return Ok(ShallowInfrastructureVariables);
         }
 
         [HttpGet("{id}")]
@@ -36,54 +41,54 @@
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(string id)
         {
-            var infrastructureVariable = await service.Get(id);
-            if (infrastructureVariable is null)
+            var ShallowInfrastructureVariable = await service.Get(id);
+            if (ShallowInfrastructureVariable is null)
             {
                 return NotFound();
             }
 
-            return Ok(infrastructureVariable);
+            return Ok(ShallowInfrastructureVariable);
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(InfrastructureVariable))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ShallowInfrastructureVariable))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] InfrastructureVariable value)
+        public async Task<IActionResult> Post([FromBody] ShallowInfrastructureVariable value)
         {
-            var infrastructureVariable = await service.Create(value);
-            if (infrastructureVariable is null)
+            var ShallowInfrastructureVariable = await service.Create(mapper.Map<InfrastructureVariable>(value));
+            if (ShallowInfrastructureVariable is null)
             {
-                return BadRequest($"Error during {nameof(InfrastructureVariable)} creation, check log");
+                return BadRequest($"Error during {nameof(ShallowInfrastructureVariable)} creation, check log");
             }
 
-            return Ok(infrastructureVariable);
+            return Ok(ShallowInfrastructureVariable);
         }
 
         [HttpPut()]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfrastructureVariable))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowInfrastructureVariable))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put([FromBody] InfrastructureVariable value)
+        public async Task<IActionResult> Put([FromBody] ShallowInfrastructureVariable value)
         {
-            var infrastructureVariable = await service.Update(value);
-            if (infrastructureVariable is null)
+            var ShallowInfrastructureVariable = await service.Update(mapper.Map<InfrastructureVariable>(value));
+            if (ShallowInfrastructureVariable is null)
             {
-                return BadRequest($"Error during {nameof(InfrastructureVariable)} updating, check log");
+                return BadRequest($"Error during {nameof(ShallowInfrastructureVariable)} updating, check log");
             }
-            return Ok(infrastructureVariable);
+            return Ok(ShallowInfrastructureVariable);
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfrastructureVariable))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowInfrastructureVariable))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(string id)
         {
-            var infrastructureVariable = await service.Delete(id);
-            if (infrastructureVariable is null)
+            var ShallowInfrastructureVariable = await service.Delete(id);
+            if (ShallowInfrastructureVariable is null)
             {
-                return BadRequest($"Error during {nameof(InfrastructureVariable)} deleting, check log");
+                return BadRequest($"Error during {nameof(ShallowInfrastructureVariable)} deleting, check log");
             }
 
-            return Ok(infrastructureVariable);
+            return Ok(ShallowInfrastructureVariable);
         }
     }
 }
