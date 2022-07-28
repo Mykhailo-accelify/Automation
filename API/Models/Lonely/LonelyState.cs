@@ -2,9 +2,11 @@
 
 namespace API.Models.Lonely;
 
-public class LonelyProduct : ILonelyProduct
+public class LonelyState : ILonelyState
 {
     public int Id { get; set; }
 
     public string Name { get; set; }
+
+    public string Abbreviation { get; set; }
 }

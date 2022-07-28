@@ -1,4 +1,5 @@
 ﻿using API.Models.Create;
+using API.Models.Lonely;
 using API.Models.Old;
 using API.Models.Shallow;
 using API.Models.Unidentified;
@@ -13,17 +14,17 @@ public class AutomationProfile : Profile
 {
     public AutomationProfile()
     {            
-        CreateMap<CreateClient, Client>();
+        //CreateMap<CreateClient, Client>();
         CreateMap<NameModel, Infrastructure>();
         CreateMap<NameModel, State>();
         CreateMap<NameModel, Product>();
 
         CreateMap<InfrastructurePut, Infrastructure>();
         CreateMap<InstancePut, Instance>();
-        CreateMap<ClientPut, Client>();
+        //CreateMap<ClientPut, Client>();
 
-        CreateMap<Client, ShallowClient>()
-            .ReverseMap();
+        //CreateMap<Client, ShallowClient>()
+       //     .ReverseMap();
         CreateMap<Infrastructure, InfrastructureOneNested>();
         CreateMap<Configuration, ConfigurationOneNested>();
         CreateMap<Instance, InstanceOneNested>();
@@ -34,7 +35,7 @@ public class AutomationProfile : Profile
         CreateMap<TypeInstance, TypeInstanceOneNested>()
             .ReverseMap();
 
-        CreateMap<Client, ClientIdentified>().ReverseMap();
+        //CreateMap<Client, ClientIdentified>().ReverseMap();
         CreateMap<Configuration, ConfigurationIdentified>().ReverseMap();
         CreateMap<Infrastructure, InfrastructureIdentified>().ReverseMap();
         CreateMap<Instance, InstanceIdentified>().ReverseMap();
@@ -51,5 +52,15 @@ public class AutomationProfile : Profile
         CreateMap<ProductBase, Product>();
         CreateMap<TypeInfrastructureBase, TypeInfrastructure>();
         CreateMap<TypeInstanceBase, TypeInstance>();
+
+
+        CreateMap<Client, ShallowClient>()
+            .ReverseMap();
+        CreateMap<CreateClient, Client>();
+
+        CreateMap<Client, LonelyClient>();
+        CreateMap<Product, LonelyProduct>();
+        CreateMap<Infrastructure, LonelyInfrastructure>();
+        CreateMap<State, LonelyState>();
     }
 }
