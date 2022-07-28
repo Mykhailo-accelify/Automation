@@ -1,96 +1,95 @@
-﻿namespace API.Controllers
+﻿namespace API.Controllers;
+
+using Models.Create;
+using Models.Shallow;
+using Athentication;
+using API.Interfaces.Services;
+using AutoMapper;
+using DataAccess.Entities;
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[ServiceAuthorize]
+[Route("api/[controller]")]
+public class InstanceController : ControllerBase
 {
-    using API.Athentication;
-    using API.Interfaces;
-    using API.Models.Old;
-    using AutoMapper;
-    using DataAccess.Entities;
-    using DataAccess.Models.Base;
-    using Microsoft.AspNetCore.Mvc;
+    private readonly IMapper mapper;
+    private readonly ICRUDService<Instance> service;
 
-    [ApiController]
-    [ServiceAuthorize]
-    [Route("api/[controller]")]
-    public class InstanceController : ControllerBase
+    public InstanceController(IMapper mapper, ICRUDService<Instance> service)
     {
-        private readonly IMapper mapper;
-        private readonly ICRUDService<Instance> service;
+        this.mapper = mapper;
+        this.service = service;
+    }
 
-        public InstanceController(IMapper mapper, ICRUDService<Instance> service)
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ShallowInstance>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Get()
+    {
+        var instances = await service.GetAll();
+        if (!instances.Any())
         {
-            this.mapper = mapper;
-            this.service = service;
+            return NotFound();
         }
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<InstanceOneNested>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Get()
-        {
-            var instances = await service.GetAll();
-            if (!instances.Any())
-            {
-                return NotFound();
-            }
+        return Ok(mapper.Map<IEnumerable<ShallowInstance>>(instances));
+    }
 
-            return Ok(mapper.Map<IEnumerable<InstanceOneNested>>(instances));
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowInstance))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Get(int id)
+    {
+        var result = await service.Get(id);
+        if (result is null)
+        {
+            return NotFound();
         }
 
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstanceOneNested))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Get(int id)
-        {
-            var result = await service.Get(id);
-            if (result is null)
-            {
-                return NotFound();
-            }
+        return Ok(mapper.Map<ShallowInstance>(result));
+    }
 
-            return Ok(mapper.Map<InstanceOneNested>(result));
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ShallowInstance))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Post([FromBody] CreateInstance item)
+    {
+        var result = await service.Create(mapper.Map<Instance>(item));
+        if (result is null)
+        {
+            return BadRequest($"Error during {nameof(Instance)} creation, check log");
         }
 
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(InstanceOneNested))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] InstanceBase item)
-        {
-            var result = await service.Create(mapper.Map<Instance>(item));
-            if (result is null)
-            {
-                return BadRequest($"Error during {nameof(Instance)} creation, check log");
-            }
+        var instance = mapper.Map<ShallowInstance>(result);
+        return CreatedAtAction(nameof(Get), new { id = instance.Id }, instance);
+    }
 
-            var instance = mapper.Map<InstanceOneNested>(result);
-            return CreatedAtAction(nameof(Get), new { id = instance.Id }, instance);
+    [HttpPut()]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowInstance))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Put([FromBody] ShallowInstance item)
+    {
+        var instance = await service.Update(mapper.Map<Instance>(item));
+        if (instance is null)
+        {
+            return BadRequest($"Error during {nameof(Instance)} updating, check log");
         }
 
-        [HttpPut()]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstanceOneNested))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put([FromBody] InstancePut item)
-        {
-            var instance = await service.Update(mapper.Map<Instance>(item));
-            if (instance is null)
-            {
-                return BadRequest($"Error during {nameof(Instance)} updating, check log");
-            }
+        return Ok(mapper.Map<ShallowInstance>(instance));
+    }
 
-            return Ok(mapper.Map<InstanceOneNested>(instance));
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowInstance))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await service.Delete(id);
+        if (result is null)
+        {
+            return BadRequest($"Error during {nameof(Infrastructure)} deleting, check log");
         }
 
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InstanceOneNested))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await service.Delete(id);
-            if (result is null)
-            {
-                return BadRequest($"Error during {nameof(Infrastructure)} deleting, check log");
-            }
-
-            return Ok(mapper.Map<InstanceOneNested>(result));
-        }
+        return Ok(mapper.Map<ShallowInstance>(result));
     }
 }

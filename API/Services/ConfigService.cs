@@ -9,6 +9,7 @@ namespace API.Services
     using System.Collections.Generic;
     using System.Xml;
     using API.Models.Old;
+    using API.Interfaces.Services;
 
     public class ConfigService : IConfigService
     {

@@ -2,7 +2,7 @@
 {
     using API.Athentication;
     using API.Comparers;
-    using API.Interfaces;
+    using API.Interfaces.Services;
     using API.Services;
     using DataAccess.Entities;
 

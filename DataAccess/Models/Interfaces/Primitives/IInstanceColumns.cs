@@ -6,6 +6,4 @@ public interface IInstanceColumns : INamed
 
     public string Secret { get; set; }
 
-    public int TypeInstanceId { get; set; }
-
 }

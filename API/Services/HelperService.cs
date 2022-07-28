@@ -1,6 +1,6 @@
 ﻿namespace API.Services
 {
-    using API.Interfaces;
+    using API.Interfaces.Services;
 
     public class HelperService : IHelperService
     {

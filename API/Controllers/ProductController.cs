@@ -1,7 +1,7 @@
 ﻿namespace API.Controllers
 {
     using API.Athentication;
-    using API.Interfaces;
+    using API.Interfaces.Services;
     using API.Models.Old;
     using AutoMapper;
     using DataAccess.Entities;

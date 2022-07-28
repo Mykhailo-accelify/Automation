@@ -1,12 +1,11 @@
-﻿using API.Models.Shallow;
+﻿using API.Models.Create;
+using API.Models.Shallow;
 using API.Models.Unidentified;
 
 namespace API.Controllers
 {
     using API.Athentication;
-    using API.Interfaces;
-    using API.Models.Client;
-    using API.Models.Old;
+    using API.Interfaces.Services;
     using AutoMapper;
     using DataAccess.Entities;
     using Microsoft.AspNetCore.Mvc;
@@ -41,7 +40,7 @@ namespace API.Controllers
 
         [HttpGet("name/{name}")]
         //[TeamCityAuthorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ClientOneNested>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ShallowClient>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(string name)
         {
@@ -51,11 +50,11 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(mapper.Map<ClientOneNested>(client));
+            return Ok(mapper.Map<ShallowClient>(client));
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ClientOneNested))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowClient))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(int id)
         {
@@ -65,14 +64,14 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(mapper.Map<ClientOneNested>(client));
+            return Ok(mapper.Map<ShallowClient>(client));
         }
 
         [HttpPost]
         //[TeamCityAuthorize]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ShallowClient))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] IUnidentifiedClient item)
+        public async Task<IActionResult> Post([FromBody] CreateClient item)
         {
             var result = await service.Create(mapper.Map<Client>(item));
             if (result is null)
@@ -85,9 +84,9 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ClientOneNested))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowClient))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put([FromBody] ClientPut item)
+        public async Task<IActionResult> Put([FromBody] ShallowClient item)
         {
             var result = await service.Update(mapper.Map<Client>(item));
             if (result is null)
@@ -95,11 +94,11 @@ namespace API.Controllers
                 return BadRequest($"Error during {nameof(Client)} updating, check log");
             }
 
-            return Ok(mapper.Map<ClientOneNested>(result));
+            return Ok(mapper.Map<ShallowClient>(result));
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ClientOneNested))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowClient))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)
         {
@@ -109,7 +108,7 @@ namespace API.Controllers
                 return BadRequest($"Error during {nameof(Client)} deleting, check log");
             }
 
-            return Ok(mapper.Map<ClientOneNested>(result));
+            return Ok(mapper.Map<ShallowClient>(result));
         }
     }
 }

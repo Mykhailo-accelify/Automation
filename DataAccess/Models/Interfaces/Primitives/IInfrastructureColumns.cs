@@ -6,6 +6,4 @@ public interface IInfrastructureColumns : INamed
 
     public string ConfigurationFolder { get; set; }
 
-    public int TypeInfrastructureId { get; set; }
-
 }

@@ -3,7 +3,7 @@ using DataAccess.Models.Interfaces.Relationships.Primitives;
 
 namespace DataAccess.Models.Interfaces;
 
-public interface IProduct : IProductColumns, IProductRelationships
+public interface IProduct : IIdentified, IProductColumns, IProductRelationships
 {
     
 }

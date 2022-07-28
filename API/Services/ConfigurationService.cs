@@ -1,6 +1,6 @@
 ﻿namespace API.Services
 {
-    using API.Interfaces;
+    using API.Interfaces.Services;
     using DataAccess.Entities;
     using Microsoft.EntityFrameworkCore;
 
