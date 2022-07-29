@@ -1,18 +1,18 @@
+using API.Profiles;
 using API.Startup.Extensions;
 using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddEventLog();// settings => settings.SourceName = "Automation");
 //builder.Logging.ClearProviders();
 //builder.Logging.AddConsole();
 
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(typeof(AutomationProfile).Assembly);//Assembly.GetExecutingAssembly());
 
 builder.Services.AddDbContext<Context>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("AutomatizationAPI")));
