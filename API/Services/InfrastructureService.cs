@@ -47,7 +47,6 @@
                 .Include(i => i.Clients)
                 .Include(i => i.Instances)
                 .ThenInclude(i => i.TypeInstance)
-                .Include(i => i.State)
                 .Include(i => i.TypeInfrastructure)
                 .SingleOrDefaultAsync(i => i.Id == id);
         }
@@ -58,7 +57,6 @@
                 .Include(i => i.Clients)
                 .Include(i => i.Instances)
                 .ThenInclude(i => i.TypeInstance)
-                .Include(i => i.State)
                 .Include(i => i.TypeInfrastructure)
                 .SingleOrDefaultAsync(i => i.Name == name);
         }
@@ -111,7 +109,6 @@
                 return default;
             }
             await context.Entry(infrastructure).Reference(i => i.TypeInfrastructure).LoadAsync();
-            await context.Entry(infrastructure).Reference(i => i.State).LoadAsync();
 
             return infrastructure;
         }
@@ -127,8 +124,7 @@
 
             environment = environment.ToUpper();
             var infrastructure = context.Infrastructure.SingleOrDefault(
-                i => i.StateId == client.StateId
-                && i.TypeInfrastructure.Name == environment
+                i => i.TypeInfrastructure.Name == environment
                 && i.MaxStudents - i.Clients.Sum(c => c.AmountStudents) >= client.AmountStudents);
             if (infrastructure == default)
             {

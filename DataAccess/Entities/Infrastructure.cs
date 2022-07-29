@@ -15,7 +15,6 @@
         //[Column(nameof(InfrastructureStateId))]
         //public virtual int InfrastructureStateId { get; set; }
         //[ForeignKey("StateId")]
-        public virtual State State { get; set; }
 
         public virtual ICollection<Instance> Instances { get; set; }
 
