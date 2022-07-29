@@ -9,7 +9,7 @@ using Models.Create;
 using Models.Shallow;
 
 [ApiController]
-[ServiceAuthorize]
+//[ServiceAuthorize]
 [Route("api/[controller]")]
 public class InfrastructureController : ControllerBase
 {
@@ -23,7 +23,7 @@ public class InfrastructureController : ControllerBase
     }
 
     [HttpGet]
-    [TeamCityAuthorize]
+    //[TeamCityAuthorize]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ShallowInfrastructure>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get()
@@ -38,7 +38,7 @@ public class InfrastructureController : ControllerBase
     }
 
     [HttpGet("name")]
-    [TeamCityAuthorize]
+    //[TeamCityAuthorize]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<State>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetNames()
@@ -109,7 +109,7 @@ public class InfrastructureController : ControllerBase
         return Ok(mapper.Map<ShallowInfrastructure>(result));
     }
 
-    [TeamCityAuthorize]
+    //[TeamCityAuthorize]
     [HttpGet("{clientId}/{environment}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowInfrastructure))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

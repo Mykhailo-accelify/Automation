@@ -15,45 +15,45 @@ namespace API.Profiles;
 public class AutomationProfile : Profile
 {
     public AutomationProfile()
-    {            
-       // //CreateMap<CreateClient, Client>();
-       // CreateMap<NameModel, Infrastructure>();
-       // CreateMap<NameModel, State>();
-       // CreateMap<NameModel, Product>();
+    {
+        // //CreateMap<CreateClient, Client>();
+        // CreateMap<NameModel, Infrastructure>();
+        // CreateMap<NameModel, State>();
+        // CreateMap<NameModel, Product>();
 
-       // CreateMap<InfrastructurePut, Infrastructure>();
-       // CreateMap<InstancePut, Instance>();
-       // //CreateMap<ClientPut, Client>();
+        // CreateMap<InfrastructurePut, Infrastructure>();
+        // CreateMap<InstancePut, Instance>();
+        // //CreateMap<ClientPut, Client>();
 
-       // //CreateMap<Client, ShallowClient>()
-       ////     .ReverseMap();
-       // CreateMap<Infrastructure, InfrastructureOneNested>();
-       // CreateMap<Configuration, ConfigurationOneNested>();
-       // CreateMap<Instance, InstanceOneNested>();
-       // CreateMap<Product, ProductOneNested>()
-       //     .ReverseMap();
-       // CreateMap<TypeInfrastructure, TypeInfrastructureOneNested>()
-       //     .ReverseMap();
-       // CreateMap<TypeInstance, TypeInstanceOneNested>()
-       //     .ReverseMap();
+        // //CreateMap<Client, ShallowClient>()
+        ////     .ReverseMap();
+        // CreateMap<Infrastructure, InfrastructureOneNested>();
+        // CreateMap<Configuration, ConfigurationOneNested>();
+        // CreateMap<Instance, InstanceOneNested>();
+        // CreateMap<Product, ProductOneNested>()
+        //     .ReverseMap();
+        // CreateMap<TypeInfrastructure, TypeInfrastructureOneNested>()
+        //     .ReverseMap();
+        // CreateMap<TypeInstance, TypeInstanceOneNested>()
+        //     .ReverseMap();
 
-       // //CreateMap<Client, ClientIdentified>().ReverseMap();
-       // CreateMap<Configuration, ConfigurationIdentified>().ReverseMap();
-       // CreateMap<Infrastructure, InfrastructureIdentified>().ReverseMap();
-       // CreateMap<Instance, InstanceIdentified>().ReverseMap();
-       // CreateMap<Product, ProductIdentified>().ReverseMap();
-       // CreateMap<TypeInfrastructure, TypeInfrastructureIdentified>().ReverseMap();
-       // CreateMap<TypeInstance, TypeInfrastructureIdentified>().ReverseMap();
+        // //CreateMap<Client, ClientIdentified>().ReverseMap();
+        // CreateMap<Configuration, ConfigurationIdentified>().ReverseMap();
+        // CreateMap<Infrastructure, InfrastructureIdentified>().ReverseMap();
+        // CreateMap<Instance, InstanceIdentified>().ReverseMap();
+        // CreateMap<Product, ProductIdentified>().ReverseMap();
+        // CreateMap<TypeInfrastructure, TypeInfrastructureIdentified>().ReverseMap();
+        // CreateMap<TypeInstance, TypeInfrastructureIdentified>().ReverseMap();
 
 
-       // //CreateMap<ClientBase, Client>();
-       // CreateMap<InfrastructureBase, Infrastructure>();
-       // CreateMap<StateBase, State>();
-       // CreateMap<ConfigurationBase, Configuration>();
-       // CreateMap<InstanceBase, Instance>();
-       // CreateMap<ProductBase, Product>();
-       // CreateMap<TypeInfrastructureBase, TypeInfrastructure>();
-       // CreateMap<TypeInstanceBase, TypeInstance>();
+        // //CreateMap<ClientBase, Client>();
+        // CreateMap<InfrastructureBase, Infrastructure>();
+        // CreateMap<StateBase, State>();
+        // CreateMap<ConfigurationBase, Configuration>();
+        // CreateMap<InstanceBase, Instance>();
+        // CreateMap<ProductBase, Product>();
+        // CreateMap<TypeInfrastructureBase, TypeInfrastructure>();
+        // CreateMap<TypeInstanceBase, TypeInstance>();
 
 
         CreateMap<Client, ShallowClient>()
@@ -67,20 +67,31 @@ public class AutomationProfile : Profile
 
         CreateMap<CreateClient, Client>();
 
-        CreateMap<INamed, State>();
+        //When creating for an easier way to link( Just specify name)
         CreateMap<INamed, Product>();
+        CreateMap<INamed, State>();
+        CreateMap<INamed, Client>();
         CreateMap<INamed, Infrastructure>();
+        CreateMap<INamed, Instance>();
+        CreateMap<INamed, TypeInstance>();
+        CreateMap<INamed, TypeInfrastructure>();
 
-        //CreateMap<Client, IShallowClient>().As<ShallowClient>();
-
-        CreateMap<Client, LonelyClient>();
+        //When 
         CreateMap<Product, LonelyProduct>();
-        CreateMap<Infrastructure, LonelyInfrastructure>();
         CreateMap<State, LonelyState>();
+        CreateMap<Client, LonelyClient>();
+        CreateMap<Infrastructure, LonelyInfrastructure>();
+        CreateMap<Instance, LonelyInstance>();
+        CreateMap<TypeInstance, LonelyType>();
+        CreateMap<TypeInfrastructure, LonelyType>();
 
-        CreateMap<Client, ILonelyClient>().As<LonelyClient>();
         CreateMap<Product, ILonelyProduct>().As<LonelyProduct>();
-        CreateMap<Infrastructure, ILonelyInfrastructure>().As<LonelyInfrastructure>();
         CreateMap<State, ILonelyState>().As<LonelyState>();
+        CreateMap<Client, ILonelyClient>().As<LonelyClient>();
+        CreateMap<Infrastructure, ILonelyInfrastructure>().As<LonelyInfrastructure>();
+        CreateMap<Instance, ILonelyInstance>().As<LonelyInstance>();
+        CreateMap<TypeInstance, IType>().As<LonelyType>();
+        CreateMap<TypeInfrastructure, IType>().As<LonelyType>();
+        //CreateMap<, >().As<>();
     }
 }
