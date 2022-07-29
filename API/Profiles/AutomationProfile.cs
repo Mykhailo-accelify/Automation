@@ -8,6 +8,7 @@ using AutoMapper;
 using DataAccess.Entities;
 using DataAccess.Models.Base;
 using DataAccess.Models.Identified;
+using DataAccess.Models.Interfaces.Primitives;
 
 namespace API.Profiles;
 
@@ -65,6 +66,11 @@ public class AutomationProfile : Profile
             .ReverseMap();
 
         CreateMap<CreateClient, Client>();
+
+        CreateMap<INamed, State>();
+        CreateMap<INamed, Product>();
+        CreateMap<INamed, Infrastructure>();
+
 
         CreateMap<Client, LonelyClient>();
         CreateMap<Product, LonelyProduct>();

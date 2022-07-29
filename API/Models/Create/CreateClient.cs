@@ -15,6 +15,6 @@ public class CreateClient : IClientColumns, ICreateClientRelationships
 
     public ICollection<INamed>? Products { get; set; }
 
-    public ICollection<INamed> Infrastructures { get; set; }
+    public ICollection<INamed>? Infrastructures { get; set; }
 
 }
