@@ -1,4 +1,5 @@
-﻿using API.Models.Create;
+﻿using API.Interfaces.Models.Primitives;
+using API.Models.Create;
 using API.Models.Lonely;
 using API.Models.Old;
 using API.Models.Shallow;

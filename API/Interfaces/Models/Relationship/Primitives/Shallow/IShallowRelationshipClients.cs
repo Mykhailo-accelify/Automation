@@ -1,4 +1,5 @@
 ﻿using API.Converters;
+using API.Interfaces.Models.Primitives;
 using API.Models.Lonely;
 using API.Models.Shallow.Primitives;
 using Newtonsoft.Json;

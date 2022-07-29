@@ -1,4 +1,5 @@
-﻿using API.Models.Shallow.Primitives;
+﻿using API.Interfaces.Models.Primitives;
+using API.Models.Shallow.Primitives;
 
 namespace API.Models.Lonely;
 

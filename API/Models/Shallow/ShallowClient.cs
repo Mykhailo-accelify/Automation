@@ -1,4 +1,5 @@
-﻿using API.Interfaces.Models.Relationship.Shallow;
+﻿using API.Interfaces.Models.Primitives;
+using API.Interfaces.Models.Relationship.Shallow;
 using API.Models.Shallow.Primitives;
 
 namespace API.Models.Shallow;
