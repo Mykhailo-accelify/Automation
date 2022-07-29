@@ -71,15 +71,16 @@ public class AutomationProfile : Profile
         CreateMap<INamed, Product>();
         CreateMap<INamed, Infrastructure>();
 
+        //CreateMap<Client, IShallowClient>().As<ShallowClient>();
 
         CreateMap<Client, LonelyClient>();
         CreateMap<Product, LonelyProduct>();
         CreateMap<Infrastructure, LonelyInfrastructure>();
-        CreateMap<State, LonelyState>();//.ConstructUsing(client => new LonelyClient());//.As<LonelyClient>();
+        CreateMap<State, LonelyState>();
+
         CreateMap<Client, ILonelyClient>().As<LonelyClient>();
         CreateMap<Product, ILonelyProduct>().As<LonelyProduct>();
-        //.ConstructUsing(client => new LonelyProduct());//.As<LonelyProduct>();
-        CreateMap<Infrastructure, ILonelyInfrastructure>().As<LonelyInfrastructure>();//.ConstructUsing(client => new LonelyInfrastructure());//.As<LonelyInfrastructure>();
-        CreateMap<State, ILonelyState>().As<LonelyState>();//.ConstructUsing(client => new LonelyState());//.As<LonelyState>();
+        CreateMap<Infrastructure, ILonelyInfrastructure>().As<LonelyInfrastructure>();
+        CreateMap<State, ILonelyState>().As<LonelyState>();
     }
 }
