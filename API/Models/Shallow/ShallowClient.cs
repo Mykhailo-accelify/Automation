@@ -1,10 +1,9 @@
-﻿using API.Interfaces.Models.Primitives;
-using API.Interfaces.Models.Relationship.Shallow;
+﻿using API.Interfaces.Models.Shallow;
 using API.Models.Shallow.Primitives;
 
 namespace API.Models.Shallow;
 
-public class ShallowClient : ILonelyClient, IClientShallowRelationship
+public class ShallowClient : IShallowClient
 {
     public int Id { get; set; }
     public int AmountStudents { get; set; }

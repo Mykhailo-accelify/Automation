@@ -1,4 +1,5 @@
 ﻿using API.Interfaces.Models.Primitives;
+using API.Interfaces.Models.Shallow;
 using API.Interfaces.Services;
 using API.Models.Create;
 using API.Models.Lonely;
@@ -87,7 +88,7 @@ public class ClientController : ControllerBase
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowClient))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Put([FromBody] ShallowClient item)
+    public async Task<IActionResult> Put([FromBody] IShallowClient item)
     {
         var result = await service.Update(mapper.Map<Client>(item));
         if (result is null)
