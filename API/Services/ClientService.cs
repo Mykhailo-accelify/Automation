@@ -1,4 +1,6 @@
-﻿namespace API.Services
+﻿using Microsoft.AspNetCore.Razor.Language.Intermediate;
+
+namespace API.Services
 {
     using API.Interfaces.Services;
     using API.Models.Client;
@@ -96,12 +98,11 @@
                 logger.LogError($"You can't create a {nameof(Client)} without a {nameof(Infrastructure)}");
                 return default;
             }
+            
+            var infrastructures = await infrastructureService.GetRange(
+                client.Infrastructures?.Select(i => i.Name));
 
-            //TODO: Move to func
-            var infrastructureNames = client.Infrastructures.Select(i => i.Name).ToArray();
-            var infrastructures = context.Infrastructure.Where(i => infrastructureNames.Any(name => name == i.Name));
-            client.Infrastructures.Clear();
-            await infrastructures.ForEachAsync(i => client.Infrastructures.Add(i));
+            //await infrastructures.ForEachAsync(i => client.Infrastructures.Add(i));
 
             var state = await context.State.SingleOrDefaultAsync(s => s.Name == client.State.Name);
             if (state is null)
@@ -166,32 +167,36 @@
                 return default;
             }
 
-            var state = await stateService.Get(newClient.State.Name);
+            if (!await SetRelationships(currentClient, newClient)) return default;
 
-            if (state is null)
-            {
-                logger.LogInformation($"{nameof(Client)} must contain {nameof(State).ToLower()}!");
-                return default;
-            }
-
-            var infrastructures = await infrastructureService.GetRange(
-                newClient.Infrastructures?.Select(i => i.Name));
-
-            var products = await productService.GetRange(
-                newClient.Products?
-                .Select(p => p.Name));
-
-
-            //Update columns
             context.Entry(currentClient).CurrentValues.SetValues(newClient);
 
-            //ONE relationship
-            currentClient.State = state;
-            //currentClient.StateId = state.Id;
+            //var state = await stateService.Get(newClient.State.Name);
 
-            //MANY relationship
-            currentClient.Products = products;
-            currentClient.Infrastructures = infrastructures;
+            //if (state is null)
+            //{
+            //    logger.LogInformation($"{nameof(Client)} must contain {nameof(State).ToLower()}!");
+            //    return default;
+            //}
+
+            //var infrastructures = await infrastructureService.GetRange(
+            //    newClient.Infrastructures?.Select(i => i.Name));
+
+            //var products = await productService.GetRange(
+            //    newClient.Products?
+            //    .Select(p => p.Name));
+
+
+            ////Update columns
+            //context.Entry(currentClient).CurrentValues.SetValues(newClient);
+
+            ////ONE relationship
+            //currentClient.State = state;
+            ////currentClient.StateId = state.Id;
+
+            ////MANY relationship
+            //currentClient.Products = products;
+            //currentClient.Infrastructures = infrastructures;
 
             //helperService.UpdateRelationCollection(currentClient.Configurations, newClient.Configurations, configurationComparer);
             //helperService.UpdateRelationCollection(currentClient.Infrastructures, newClient.Infrastructures, infrastructureComparer);
@@ -204,6 +209,42 @@
 
             //await context.Entry(currentClient).Reference(c => c.State).LoadAsync();
             return await Get(currentClient.Id);
+        }
+
+        private async Task<bool> SetRelationships(Client? client, Client? source = null)
+        {
+            if (client is null)
+            {
+                logger.LogError($"Source {nameof(Client)} for load relationship was null.");
+                return false;
+            }
+
+            source ??= client;
+
+            if (source.State?.Name is null)
+            {
+                logger.LogError($"{nameof(Client)} must contain {nameof(State).ToLower()}!");
+                return false;
+            }
+
+            var state = await stateService.Get(source.State.Name);
+            if (state is null)
+            {
+                logger.LogError($"{nameof(Client)} must contain {nameof(State).ToLower()}!");
+                return false;
+            }
+
+            client.State = state;
+
+            client.Infrastructures = await infrastructureService.GetRange(
+                source.Infrastructures?
+                    .Select(i => i.Name));
+
+            client.Products = await productService.GetRange(
+                source.Products?
+                    .Select(p => p.Name));
+
+            return true;
         }
     }
 }

@@ -25,9 +25,9 @@ public class Client : IClient
     public int StateId { get; set; }
 
     [ForeignKey(nameof(StateId))]
-    public virtual State State { get; set; }
+    public State State { get; set; }
 
-    public virtual ICollection<Product> Products { get; set; }
+    public ICollection<Product> Products { get; set; }
 
     public ICollection<Infrastructure> Infrastructures { get; set; }
 
