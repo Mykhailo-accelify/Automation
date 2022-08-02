@@ -30,6 +30,18 @@
                 .ToListAsync();
         }
 
+        public async Task<ICollection<Product>?> GetRange(IEnumerable<string>? names)
+        {
+            if (names is null || names.Count() == 0)
+            {
+                return null;
+            }
+
+            return await context.Product
+                .Where(p => names.Any(n => p.Name == n))
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<string>> GetNames()
         {
             return await context.Product

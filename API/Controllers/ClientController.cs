@@ -5,6 +5,7 @@ using API.Models.Create;
 using API.Models.Lonely;
 using API.Models.Shallow;
 using API.Models.Shallow.Primitives;
+using API.Models.Update;
 using AutoMapper;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -88,7 +89,7 @@ public class ClientController : ControllerBase
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ShallowClient))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Put([FromBody] IShallowClient item)
+    public async Task<IActionResult> Put([FromBody] UpdateClient item)
     {
         var result = await service.Update(mapper.Map<Client>(item));
         if (result is null)

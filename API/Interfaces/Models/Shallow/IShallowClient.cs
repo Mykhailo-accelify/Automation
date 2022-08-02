@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace API.Interfaces.Models.Shallow;
 
-[JsonConverter(typeof(InterfaceConverter<ShallowClient, IShallowClient>))]
+//[JsonConverter(typeof(InterfaceConverter<ShallowClient, IShallowClient>))]
 public interface IShallowClient : ILonelyClient, IClientShallowRelationship
 {
     

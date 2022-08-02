@@ -8,8 +8,13 @@
     public class ClientService : IClientService
     {
         private readonly ILogger logger;
+
         private readonly Context context;
         private readonly IHelperService helperService;
+        private readonly IStateService stateService;
+        private readonly IInfrastructureService infrastructureService;
+        private readonly IProductService productService;
+
         private readonly IEqualityComparer<Configuration> configurationComparer;
         private readonly IEqualityComparer<Infrastructure> infrastructureComparer;
         private readonly IEqualityComparer<Product> productComparer;
@@ -18,14 +23,19 @@
             Context context,
             ILogger<ClientService> logger,
             IHelperService helperService,
+            IStateService stateService,
+            IProductService productService,
+            IInfrastructureService infrastructureService,
             IEqualityComparer<Configuration> configurationComparer,
             IEqualityComparer<Infrastructure> infrastructureComparer,
             IEqualityComparer<Product> productComparer
-            )
-        {
+        ) {
             this.logger = logger;
             this.context = context;
             this.helperService = helperService;
+            this.infrastructureService = infrastructureService;
+            this.productService = productService;
+            this.stateService = stateService;
             this.configurationComparer = configurationComparer;
             this.infrastructureComparer = infrastructureComparer;
             this.productComparer = productComparer;
@@ -124,7 +134,13 @@
 
         public async Task<Client?> Delete(int id)
         {
-            var client = await context.Client.SingleOrDefaultAsync(i => i.Id == id);
+            var client = await context.Client
+                .Include(c => c.State)
+                .Include(c => c.Infrastructures)
+                .ThenInclude(i => i.TypeInfrastructure)
+                .Include(c => c.Products)
+                .SingleOrDefaultAsync(i => i.Id == id);
+
             if (client == default)
             {
                 logger.LogInformation($"Try delete non exist {nameof(Client)} entity");
@@ -140,28 +156,54 @@
             return client;
         }
 
-        public async Task<Client?> Update(Client item)
-        {
-            var client = await Get(item.Id);
-            if (client == default)
+        public async Task<Client?> Update(Client newClient)
+        { 
+            //Load exist entities
+            var currentClient = await Get(newClient.Id);
+            if (currentClient == default)
             {
                 logger.LogInformation($"Try update non exist {nameof(Client)} entity");
                 return default;
             }
 
-            context.Entry(client).CurrentValues.SetValues(item);
+            var state = await stateService.Get(newClient.State.Name);
 
-            helperService.UpdateRelationCollection(client.Configurations, item.Configurations, configurationComparer);
-            helperService.UpdateRelationCollection(client.Infrastructures, item.Infrastructures, infrastructureComparer);
-            helperService.UpdateRelationCollection(client.Products, item.Products, productComparer);
+            if (state is null)
+            {
+                logger.LogInformation($"{nameof(Client)} must contain {nameof(State).ToLower()}!");
+                return default;
+            }
+
+            var infrastructures = await infrastructureService.GetRange(
+                newClient.Infrastructures?.Select(i => i.Name));
+
+            var products = await productService.GetRange(
+                newClient.Products?
+                .Select(p => p.Name));
+
+
+            //Update columns
+            context.Entry(currentClient).CurrentValues.SetValues(newClient);
+
+            //ONE relationship
+            currentClient.State = state;
+            //currentClient.StateId = state.Id;
+
+            //MANY relationship
+            currentClient.Products = products;
+            currentClient.Infrastructures = infrastructures;
+
+            //helperService.UpdateRelationCollection(currentClient.Configurations, newClient.Configurations, configurationComparer);
+            //helperService.UpdateRelationCollection(currentClient.Infrastructures, newClient.Infrastructures, infrastructureComparer);
+            //helperService.UpdateRelationCollection(currentClient.Products, newClient.Products, productComparer);
 
             if (!await context.SafeSaveChangesAsync(logger))
             {
                 return default;
             }
 
-            await context.Entry(client).Reference(c => c.State).LoadAsync();
-            return client;
+            //await context.Entry(currentClient).Reference(c => c.State).LoadAsync();
+            return await Get(currentClient.Id);
         }
     }
 }

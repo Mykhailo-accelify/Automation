@@ -34,6 +34,15 @@
                 .ToListAsync();
         }
 
+        public async Task<ICollection<Infrastructure>?> GetRange(IEnumerable<string>? names)
+        {
+            if (names is null || names.Count() == 0) return null;
+
+            return await context.Infrastructure
+                .Where(i => names.Any(name => name == i.Name))
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<string>> GetNames()
         {
             return await context.Infrastructure

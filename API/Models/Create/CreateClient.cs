@@ -1,9 +1,10 @@
-﻿using API.Interfaces.Models.Relationship.Create;
+﻿using API.Interfaces.Models.Create;
+using API.Interfaces.Models.Relationship.Create;
 using DataAccess.Models.Interfaces.Primitives;
 
 namespace API.Models.Create;
 
-public class CreateClient : IClientColumns, ICreateClientRelationships
+public class CreateClient : ICreateClient
 {
     public string Name { get; set; }
 

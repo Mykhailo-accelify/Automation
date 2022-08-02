@@ -9,5 +9,8 @@
         public Task<Infrastructure?> Get(string name);
 
         public Task<Infrastructure?> Booking(int clientId, string environment);
+
+        public Task<ICollection<Infrastructure>?> GetRange(IEnumerable<string>? names);
+        
     }
 }

@@ -5,6 +5,7 @@ using API.Models.Old;
 using API.Models.Shallow;
 using API.Models.Shallow.Primitives;
 using API.Models.Unidentified;
+using API.Models.Update;
 using AutoMapper;
 using DataAccess.Entities;
 using DataAccess.Models.Base;
@@ -66,7 +67,11 @@ public class AutomationProfile : Profile
         CreateMap<State, ShallowState>()
             .ReverseMap();
 
+        //Create
         CreateMap<CreateClient, Client>();
+
+        //Update
+        CreateMap<UpdateClient, Client>();
 
         //When creating for an easier way to link( Just specify name)
         CreateMap<INamed, Product>();

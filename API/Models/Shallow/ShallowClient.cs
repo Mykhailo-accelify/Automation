@@ -1,5 +1,7 @@
 ﻿using API.Interfaces.Models.Shallow;
 using API.Models.Shallow.Primitives;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace API.Models.Shallow;
 

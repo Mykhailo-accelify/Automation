@@ -10,7 +10,7 @@ public class InterfaceConverter<TClass, TInterface> :
 {
     public override bool CanConvert(Type typeToConvert)
     {
-        return true;
+        return typeToConvert != typeof(TClass);
     }
 
     public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
@@ -24,11 +24,14 @@ public class InterfaceConverter<TClass, TInterface> :
 
         if (objectType == typeof(TInterface))
         {
-            var typeToken = json.SelectToken("name"); // or ??json.SelectToken("Type");
-            if (typeToken == null) return null;
-
             var named = json.ToObject<TClass>();
             return named;
+        }
+
+        if (objectType == typeof(TClass))
+        {
+            //Loop
+            return null; // JsonConvert.DeserializeObject<TClass>(json.ToString());
         }
 
         return null;

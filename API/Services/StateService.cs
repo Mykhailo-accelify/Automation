@@ -24,6 +24,15 @@
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<State>?> GetRange(IEnumerable<string>? names)
+        {
+            if (names is null || names.Count() == 0) return null;
+
+            return await context.State
+                .Where(s => names.Any(name => name == s.Name))
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<string>> GetNames()
         {
             return await context.State
@@ -35,6 +44,14 @@
         {
             return await context.State
                 .SingleOrDefaultAsync(i => i.Id == id);
+        }
+
+        public async Task<State?> Get(string name)
+        {
+            if (name is null) return null;
+
+            return await context.State
+                .SingleOrDefaultAsync(s => name == s.Name);
         }
 
         public async Task<State?> Create(State state)
